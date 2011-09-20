@@ -2,6 +2,7 @@ require 'plek/version'
 
 class Plek
   DOMAIN = {
+    "test"        => "test.gov.uk",
     "development" => "dev.gov.uk"
   }
 
@@ -13,8 +14,9 @@ class Plek
   end
 
   %W(panopticon sign-on-o-tron imminence publisher need-o-tron frontend).each do |service|
+    # FIXME: *Everything* should be SSL
     define_method service.gsub(/[^a-z]+/, '_') do
-      "#{name_for(service)}.#{domain}"
+      "http://#{name_for(service)}.#{domain}"
     end
   end
 
