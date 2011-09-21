@@ -13,15 +13,19 @@ class Plek
     self.environment = environment
   end
 
-  %W(panopticon sign-on-o-tron imminence publisher need-o-tron frontend).each do |service|
+  def find service
     # FIXME: *Everything* should be SSL
+    "http://#{name_for(service)}.#{domain}"
+  end
+
+  %W(panopticon sign-on-o-tron imminence publisher need-o-tron frontend).each do |service|
     define_method service.gsub(/[^a-z]+/, '_') do
-      "http://#{name_for(service)}.#{domain}"
+      find service
     end
   end
 
   def name_for service
-    case service
+    case service.to_s.strip
     when 'frontend'
       'www'
     else
