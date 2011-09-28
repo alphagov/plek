@@ -1,10 +1,56 @@
 require 'plek/version'
 
 class Plek
-  DOMAIN = {
-    "test"        => "test.gov.uk",
-    "development" => "dev.gov.uk"
-  }
+  DEFAULT_PATTERN = "pattern".freeze
+
+  SERVICES = {
+    "staging.frontend"               => "demo.alphagov.co.uk",
+    "staging.authentication"         => "signonotron.alpha.gov.uk",
+    "staging.needs"                  => "needotron.alpha.gov.uk",
+    "staging.publisher"              => "guides.staging.alphagov.co.uk:8080",
+    "staging.data"                   => "imminence.staging.alphagov.co.uk:8080",
+    "staging.arbiter"                => "panopticon.staging.alphagov.co.uk:8080",
+    "staging.#{DEFAULT_PATTERN}"     => "%s.staging.alphagov.co.uk:8080",
+
+    "development.authentication"     => "signonotron.dev.gov.uk",
+    "development.needs"              => "needotron.dev.gov.uk",
+    "development.data"               => "imminence.dev.gov.uk",
+    "development.arbiter"            => "panopticon.dev.gov.uk",
+    "development.#{DEFAULT_PATTERN}" => "%s.dev.gov.uk",
+
+    "test.authentication"            => "signonotron.test.gov.uk",
+    "test.needs"                     => "needotron.test.gov.uk",
+    "test.data"                      => "imminence.test.gov.uk",
+    "test.arbiter"                   => "panopticon.test.gov.uk",
+    "test.#{DEFAULT_PATTERN}"        => "%s.test.gov.uk",
+  }.freeze
+
+  PURPOSE_FOR_SERVICE = {
+    "need-o-tron"    => "needs",
+    "sign-on-o-tron" => "authentication",
+    "imminence"      => "data",
+    "panopticon"     => "arbiter"
+  }.freeze
+
+  SERVICE_NAMES = %w(
+    panopticon
+    sign-on-o-tron
+    imminence
+    publisher
+    need-o-tron
+    frontend
+  ).freeze
+
+  SERVICE_NAMES.each do |service_name|
+    # Backward compatibility
+    method_name = service_name.gsub(/[^a-z]+/, '_')
+    define_method method_name do
+      name = PURPOSE_FOR_SERVICE[service_name] || service_name
+      puts "Plek##{method_name} is deprecated and will be removed in an " +
+           "upcoming release.\nUse `Plek#find('#{name}')` instead."
+      find name
+    end
+  end
 
   attr_accessor :environment
   private :environment=, :environment
@@ -13,28 +59,38 @@ class Plek
     self.environment = environment
   end
 
+  # Find the URI for a service.
+  #
+  # Services don't map directly to applications since we may replace an
+  # application but retain the service.
+  #
+  # Currently we have these services:
+  #
+  #    frontend: Where the public can see our output.
+  #    authentication: Where we send staff so they can log in.
+  #    publisher: Where we write content.
+  #    needs: Where we record the needs that we're going to fulfill.
+  #    data: Where our datasets live.
+  #    arbiter: organises data shared between the applications
+  #
   def find service
+    name = name_for service
+    host = SERVICES[service_key_for(name)]
+    host ||= SERVICES["#{environment}.#{DEFAULT_PATTERN}"].to_s % name
     # FIXME: *Everything* should be SSL
-    "http://#{name_for(service)}.#{domain}"
+    "http://#{host}"
   end
 
-  %W(panopticon sign-on-o-tron imminence publisher need-o-tron frontend).each do |service|
-    define_method service.gsub(/[^a-z]+/, '_') do
-      find service
-    end
+  def service_key_for name
+    "#{environment}.#{name}"
   end
 
   def name_for service
-    case service.to_s.strip
-    when 'frontend'
-      'www'
-    else
-      service.gsub(/[^a-z]+/, '')
-    end
-  end
-
-  def domain
-    DOMAIN[environment]
+    name = service.to_s.dup
+    name.downcase!
+    name.strip!
+    name.gsub! /[^a-z]+/, ''
+    name
   end
 
   def self.current
