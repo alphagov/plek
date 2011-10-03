@@ -1,3 +1,4 @@
+require 'builder'
 require 'plek/version'
 
 class Plek
@@ -7,10 +8,10 @@ class Plek
     "staging.frontend"               => "demo.alphagov.co.uk",
     "staging.authentication"         => "signonotron.alpha.gov.uk",
     "staging.needs"                  => "needotron.alpha.gov.uk",
-    "staging.publisher"              => "guides.staging.alphagov.co.uk:8080",
-    "staging.data"                   => "imminence.staging.alphagov.co.uk:8080",
-    "staging.arbiter"                => "panopticon.staging.alphagov.co.uk:8080",
-    "staging.#{DEFAULT_PATTERN}"     => "%s.staging.alphagov.co.uk:8080",
+    "staging.publisher"              => "guides.staging.alphagov.co.uk",
+    "staging.data"                   => "imminence.staging.alphagov.co.uk",
+    "staging.arbiter"                => "panopticon.staging.alphagov.co.uk",
+    "staging.#{DEFAULT_PATTERN}"     => "%s.staging.alphagov.co.uk",
 
     "development.authentication"     => "signonotron.dev.gov.uk",
     "development.needs"              => "needotron.dev.gov.uk",
@@ -24,6 +25,15 @@ class Plek
     "test.arbiter"                   => "panopticon.test.gov.uk",
     "test.#{DEFAULT_PATTERN}"        => "%s.test.gov.uk",
   }.freeze
+
+  SERVICE_TOKENS = %w(
+    frontend
+    authentication
+    needs
+    publisher
+    data
+    arbiter
+  ).sort.freeze
 
   PURPOSE_FOR_SERVICE = {
     "need-o-tron"    => "needs",
@@ -39,7 +49,7 @@ class Plek
     publisher
     need-o-tron
     frontend
-  ).freeze
+  ).sort.freeze
 
   SERVICE_NAMES.each do |service_name|
     # Backward compatibility
@@ -57,6 +67,19 @@ class Plek
 
   def initialize environment
     self.environment = environment
+  end
+
+  def to_xml
+    io = StringIO.new
+    builder = Builder::XmlMarkup.new :target => io, :spacing => 2
+    builder.services :environment => environment do |services|
+      SERVICE_TOKENS.each do |token|
+        uri = find token
+        services.service :token => token, :uri => uri
+      end
+    end
+    io.rewind
+    io.string
   end
 
   # Find the URI for a service.
