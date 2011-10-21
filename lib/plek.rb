@@ -5,8 +5,7 @@ class Plek
   DEFAULT_PATTERN = "pattern".freeze
 
   SERVICES = {
-    "production.arbiter"             => "panopticon.staging.alphagov.co.uk",
-    "production.#{DEFAULT_PATTERN}"  => "%s.gov.uk",
+    "production.#{DEFAULT_PATTERN}"  => "%s.production.alphagov.co.uk",
 
     "staging.frontend"               => "demo.alphagov.co.uk",
     "staging.authentication"         => "signonotron.alpha.gov.uk",
