@@ -17,7 +17,7 @@ class Plek
     "staging.needs"                  => "needotron.alpha.gov.uk",
     "staging.publisher"              => "guides.staging.alphagov.co.uk",
     "staging.data"                   => "imminence.staging.alphagov.co.uk",
-    "staging.arbiter"                => "panopticon.staging.alphagov.co.uk:8080",
+    "staging.arbiter"                => "panopticon.staging.alphagov.co.uk",
     "staging.#{DEFAULT_PATTERN}"     => "%s.staging.alphagov.co.uk",
 
     "development.authentication"     => "signonotron.dev.gov.uk",
