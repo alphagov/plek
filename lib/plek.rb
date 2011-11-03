@@ -47,6 +47,7 @@ class Plek
     publisher
     data
     arbiter
+    search
   ).sort.freeze
 
   PURPOSE_FOR_SERVICE = {
@@ -63,6 +64,7 @@ class Plek
     publisher
     need-o-tron
     frontend
+    search
   ).sort.freeze
 
   SERVICE_NAMES.each do |service_name|
