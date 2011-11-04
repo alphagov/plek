@@ -12,6 +12,13 @@ class Plek
     "production.arbiter"             => "panopticon.production.alphagov.co.uk",
     "production.#{DEFAULT_PATTERN}"  => "%s.production.alphagov.co.uk",
 
+    "preview.frontend"               => "www.preview.alphagov.co.uk",
+    "preview.authentication"         => "signonotron.preview.alphagov.co.uk",
+    "preview.needs"                  => "needotron.preview.alphagov.co.uk",
+    "preview.data"                   => "imminence.preview.alphagov.co.uk",
+    "preview.arbiter"                => "panopticon.preview.alphagov.co.uk",
+    "preview.#{DEFAULT_PATTERN}"     => "%s.preview.alphagov.co.uk",
+
     "staging.frontend"               => "demo.alphagov.co.uk",
     "staging.authentication"         => "signonotron.alpha.gov.uk",
     "staging.needs"                  => "needotron.alpha.gov.uk",
