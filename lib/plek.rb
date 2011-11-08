@@ -133,7 +133,7 @@ class Plek
   end
 
   def self.current
-    env = ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development'
+    env = ENV['FACTER_govuk_platform'] || ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development'
     Plek.new env
   end
 end
