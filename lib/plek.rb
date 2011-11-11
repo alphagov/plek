@@ -79,6 +79,7 @@ class Plek
   end
 
   attr_accessor :environment
+  private :environment=
 
   def initialize environment
     self.environment = environment
