@@ -34,6 +34,7 @@ class Plek
     "development.needs"              => "needotron.dev.gov.uk",
     "development.data"               => "imminence.dev.gov.uk",
     "development.arbiter"            => "panopticon.dev.gov.uk",
+    "development.assets"             => "static.dev.gov.uk",
     "development.#{DEFAULT_PATTERN}" => "%s.dev.gov.uk",
 
     "test.authentication"            => "signonotron.test.gov.uk",
