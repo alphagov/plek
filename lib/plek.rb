@@ -11,7 +11,7 @@ class Plek
     "production.data"                => "imminence.production.alphagov.co.uk",
     "production.arbiter"             => "panopticon.production.alphagov.co.uk",
     "production.assets"              => "static.production.alphagov.co.uk",
-    "production.publication-preview" => "frontend.production.alphagov.co.uk"
+    "production.publication-preview" => "frontend.production.alphagov.co.uk",
     "production.#{DEFAULT_PATTERN}"  => "%s.production.alphagov.co.uk",
 
     "preview.frontend"               => "www.preview.alphagov.co.uk",
@@ -20,7 +20,7 @@ class Plek
     "preview.data"                   => "imminence.preview.alphagov.co.uk",
     "preview.arbiter"                => "panopticon.preview.alphagov.co.uk",
     "preview.assets"                 => "static.preview.alphagov.co.uk",
-    "preview.publication-preview"    => "frontend.preview.alphagov.co.uk"
+    "preview.publication-preview"    => "frontend.preview.alphagov.co.uk",
     "preview.#{DEFAULT_PATTERN}"     => "%s.preview.alphagov.co.uk",
 
     "staging.frontend"               => "demo.alphagov.co.uk",
@@ -37,14 +37,14 @@ class Plek
     "development.data"               => "imminence.dev.gov.uk",
     "development.arbiter"            => "panopticon.dev.gov.uk",
     "development.assets"             => "static.dev.gov.uk",
-    "development.publication-preview"=> "www.dev.gov.uk"
+    "development.publication-preview"=> "www.dev.gov.uk",
     "development.#{DEFAULT_PATTERN}" => "%s.dev.gov.uk",
 
     "test.authentication"            => "signonotron.test.gov.uk",
     "test.needs"                     => "needotron.test.gov.uk",
     "test.data"                      => "imminence.test.gov.uk",
     "test.arbiter"                   => "panopticon.test.gov.uk",
-    "test.publication-preview"       => "www.test.gov.uk"
+    "test.publication-preview"       => "www.test.gov.uk",
     "test.#{DEFAULT_PATTERN}"        => "%s.test.gov.uk",
   }.freeze
 
