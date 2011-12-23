@@ -126,7 +126,11 @@ class Plek
     host = SERVICES[service_key_for(name)]
     host ||= SERVICES["#{environment}.#{DEFAULT_PATTERN}"].to_s % name
     # FIXME: *Everything* should be SSL
-    "http://#{host}"
+    if environment == 'production' and name == 'assets'
+      "https://#{host}"
+    else
+      "http://#{host}"
+    end
   end
 
   def service_key_for name
