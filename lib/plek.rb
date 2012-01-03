@@ -12,6 +12,8 @@ class Plek
     "production.arbiter"             => "panopticon.production.alphagov.co.uk",
     "production.assets"              => "static.production.alphagov.co.uk",
     "production.publicationpreview"  => "private-frontend.production.alphagov.co.uk",
+    "production.whitehall"           => "whitehall.production.alphagov.co.uk",
+    "production.whitehallsearch"     => "whitehall-search.production.alphagov.co.uk",
     "production.#{DEFAULT_PATTERN}"  => "%s.production.alphagov.co.uk",
 
     "preview.frontend"               => "www.preview.alphagov.co.uk",
@@ -21,6 +23,8 @@ class Plek
     "preview.arbiter"                => "panopticon.preview.alphagov.co.uk",
     "preview.assets"                 => "static.preview.alphagov.co.uk",
     "preview.publicationpreview"     => "private-frontend.preview.alphagov.co.uk",
+    "preview.whitehall"              => "whitehall.preview.alphagov.co.uk",
+    "preview.whitehallsearch"        => "whitehall-search.preview.alphagov.co.uk",
     "preview.#{DEFAULT_PATTERN}"     => "%s.preview.alphagov.co.uk",
 
     "staging.frontend"               => "demo.alphagov.co.uk",
