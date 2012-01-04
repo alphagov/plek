@@ -69,4 +69,9 @@ class PlekTest < Test::Unit::TestCase
     url = Plek.new("development").find("non-whitehall-service")
     assert_equal "http", URI.parse(url).scheme
   end
+
+  def test_should_return_search_as_non_ssl
+    url = Plek.new("production").find("search")
+    assert_equal "http", URI.parse(url).scheme
+  end
 end
