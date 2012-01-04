@@ -50,6 +50,8 @@ class Plek
     "test.data"                      => "imminence.test.gov.uk",
     "test.arbiter"                   => "panopticon.test.gov.uk",
     "test.publicationpreview"        => "www.test.gov.uk",
+    "test.whitehall"                 => "whitehall.test.alphagov.co.uk",
+    "test.whitehallsearch"           => "whitehall-search.test.alphagov.co.uk",
     "test.#{DEFAULT_PATTERN}"        => "%s.test.gov.uk",
   }.freeze
 
