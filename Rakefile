@@ -9,3 +9,9 @@ Rake::TestTask.new do |t|
   t.verbose = true
   t.warning = true
 end
+
+require "gem_publisher"
+task :publish_gem do |t|
+  gem = GemPublisher.publish_if_updated("plek.gemspec", :rubygems)
+  puts "Published #{gem}" if gem
+end
