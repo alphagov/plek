@@ -166,8 +166,15 @@ class Plek
     name
   end
 
+  def self.current_env
+    if (ENV['RAILS_ENV'] || ENV['RACK_ENV']) == 'test'
+      'test'
+    else
+      ENV['FACTER_govuk_platform'] || ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development'
+    end
+  end
+
   def self.current
-    env = ENV['FACTER_govuk_platform'] || ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development'
-    Plek.new env
+    Plek.new(current_env)
   end
 end
