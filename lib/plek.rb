@@ -25,6 +25,7 @@ class Plek
     "preview.assets"                 => "static.preview.alphagov.co.uk",
     "preview.cdn"                    => "djb1962t8apu5.cloudfront.net",
     "preview.publicationpreview"     => "private-frontend.preview.alphagov.co.uk",
+    "preview.tariff"                 => "tariff.preview.alphagov.co.uk",
     "preview.whitehall"              => "whitehall.preview.alphagov.co.uk",
     "preview.whitehallsearch"        => "whitehall-search.preview.alphagov.co.uk",
     "preview.#{DEFAULT_PATTERN}"     => "%s.preview.alphagov.co.uk",
@@ -85,6 +86,7 @@ class Plek
     need-o-tron
     frontend
     search
+    tariff
   ).sort.freeze
 
   SERVICE_NAMES.each do |service_name|

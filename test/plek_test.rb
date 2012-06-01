@@ -74,4 +74,9 @@ class PlekTest < Test::Unit::TestCase
     url = Plek.new("production").find("search")
     assert_equal "http", URI.parse(url).scheme
   end
+
+  def test_should_return_tariff_preview_host_domain
+    tariff_url = Plek.new("preview").find("tariff")
+    assert_equal "https://tariff.preview.alphagov.co.uk", tariff_url
+  end
 end
