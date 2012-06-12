@@ -6,7 +6,7 @@ class Plek
 
   SERVICES = {
     "production.frontend"            => "www.production.alphagov.co.uk",
-    "production.authentication"      => "signonotron.production.alphagov.co.uk",
+    "production.authentication"      => "signon.production.alphagov.co.uk",
     "production.needs"               => "needotron.production.alphagov.co.uk",
     "production.data"                => "imminence.production.alphagov.co.uk",
     "production.arbiter"             => "panopticon.production.alphagov.co.uk",
@@ -18,7 +18,7 @@ class Plek
     "production.#{DEFAULT_PATTERN}"  => "%s.production.alphagov.co.uk",
 
     "preview.frontend"               => "www.preview.alphagov.co.uk",
-    "preview.authentication"         => "signonotron.preview.alphagov.co.uk",
+    "preview.authentication"         => "signon.preview.alphagov.co.uk",
     "preview.needs"                  => "needotron.preview.alphagov.co.uk",
     "preview.data"                   => "imminence.preview.alphagov.co.uk",
     "preview.arbiter"                => "panopticon.preview.alphagov.co.uk",
@@ -31,7 +31,7 @@ class Plek
     "preview.#{DEFAULT_PATTERN}"     => "%s.preview.alphagov.co.uk",
 
     "staging.frontend"               => "demo.alphagov.co.uk",
-    "staging.authentication"         => "signonotron.alpha.gov.uk",
+    "staging.authentication"         => "signon.alpha.gov.uk",
     "staging.needs"                  => "needotron.alpha.gov.uk",
     "staging.publisher"              => "guides.staging.alphagov.co.uk",
     "staging.data"                   => "imminence.staging.alphagov.co.uk",
@@ -41,7 +41,7 @@ class Plek
     "staging.publicationpreview"     => "private-frontend.staging.alphagov.co.uk",
     "staging.#{DEFAULT_PATTERN}"     => "%s.staging.alphagov.co.uk",
 
-    "development.authentication"     => "signonotron.dev.gov.uk",
+    "development.authentication"     => "signon.dev.gov.uk",
     "development.needs"              => "needotron.dev.gov.uk",
     "development.data"               => "imminence.dev.gov.uk",
     "development.arbiter"            => "panopticon.dev.gov.uk",
@@ -50,7 +50,7 @@ class Plek
     "development.publicationpreview" => "www.dev.gov.uk",
     "development.#{DEFAULT_PATTERN}" => "%s.dev.gov.uk",
 
-    "test.authentication"            => "signonotron.test.gov.uk",
+    "test.authentication"            => "signon.test.gov.uk",
     "test.needs"                     => "needotron.test.gov.uk",
     "test.data"                      => "imminence.test.gov.uk",
     "test.arbiter"                   => "panopticon.test.gov.uk",
@@ -73,14 +73,14 @@ class Plek
 
   PURPOSE_FOR_SERVICE = {
     "need-o-tron"    => "needs",
-    "sign-on-o-tron" => "authentication",
+    "signon"         => "authentication",
     "imminence"      => "data",
     "panopticon"     => "arbiter"
   }.freeze
 
   SERVICE_NAMES = %w(
     panopticon
-    sign-on-o-tron
+    signon
     imminence
     publisher
     need-o-tron
