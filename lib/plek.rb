@@ -58,6 +58,7 @@ class Plek
     "test.cdn"                       => "static.test.gov.uk",
     "test.whitehall"                 => "whitehall.test.alphagov.co.uk",
     "test.whitehallsearch"           => "whitehall-search.test.alphagov.co.uk",
+    "test.whitehall-search"          => "whitehall-search.test.alphagov.co.uk",
     "test.#{DEFAULT_PATTERN}"        => "%s.test.gov.uk",
   }.freeze
 
@@ -164,7 +165,7 @@ class Plek
     name = service.to_s.dup
     name.downcase!
     name.strip!
-    name.gsub!(/[^a-z\.]+/, '')
+    name.gsub!(/[^a-z\.-]+/, '')
     name
   end
 

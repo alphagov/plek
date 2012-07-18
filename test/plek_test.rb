@@ -94,4 +94,20 @@ class PlekTest < Test::Unit::TestCase
     url = Plek.new("production").find("explore.reviewomatic")
     assert_equal "https://explore.reviewomatic.production.alphagov.co.uk", url
   end
+
+  def test_should_return_dash_divided_source_in_dev
+    url = Plek.new("development").find("explore-reviewomatic")
+    assert_equal "http://explore-reviewomatic.dev.gov.uk", url
+  end
+
+  def test_should_return_dash_divided_source_in_preview
+    url = Plek.new("preview").find("explore-reviewomatic")
+    assert_equal "https://explore-reviewomatic.preview.alphagov.co.uk", url
+  end
+
+  def test_should_return_dash_divided_source_in_production
+    url = Plek.new("production").find("explore-reviewomatic")
+    assert_equal "https://explore-reviewomatic.production.alphagov.co.uk", url
+  end
+
 end
