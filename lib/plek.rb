@@ -47,6 +47,8 @@ class Plek
     "development.arbiter"            => "panopticon.dev.gov.uk",
     "development.assets"             => "static.dev.gov.uk",
     "development.cdn"                => "static.dev.gov.uk",
+    "development.whitehall"          => "whitehall.dev.gov.uk",
+    "development.whitehall-search"   => "whitehall-search.dev.gov.uk",
     "development.publication-preview"=> "www.dev.gov.uk",
     "development.#{DEFAULT_PATTERN}" => "%s.dev.gov.uk",
 
