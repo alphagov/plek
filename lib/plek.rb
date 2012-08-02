@@ -5,7 +5,7 @@ class Plek
   DEFAULT_PATTERN = "pattern".freeze
 
   SERVICES = {
-    "production.frontend"            => "www.production.alphagov.co.uk",
+    "production.www"                 => "www.gov.uk",
     "production.authentication"      => "signon.production.alphagov.co.uk",
     "production.needs"               => "needotron.production.alphagov.co.uk",
     "production.data"                => "imminence.production.alphagov.co.uk",
@@ -17,7 +17,7 @@ class Plek
     "production.whitehall-search"    => "whitehall-search.production.alphagov.co.uk",
     "production.#{DEFAULT_PATTERN}"  => "%s.production.alphagov.co.uk",
 
-    "preview.frontend"               => "www.preview.alphagov.co.uk",
+    "preview.www"                    => "www.preview.alphagov.co.uk",
     "preview.authentication"         => "signon.preview.alphagov.co.uk",
     "preview.needs"                  => "needotron.preview.alphagov.co.uk",
     "preview.data"                   => "imminence.preview.alphagov.co.uk",
