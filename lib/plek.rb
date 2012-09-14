@@ -6,7 +6,6 @@ class Plek
 
   SERVICES = {
     "production.www"                 => "www.gov.uk",
-    "production.authentication"      => "signon.production.alphagov.co.uk",
     "production.needs"               => "needotron.production.alphagov.co.uk",
     "production.data"                => "imminence.production.alphagov.co.uk",
     "production.assets"              => "static.production.alphagov.co.uk",
@@ -17,7 +16,6 @@ class Plek
     "production.#{DEFAULT_PATTERN}"  => "%s.production.alphagov.co.uk",
 
     "preview.www"                    => "www.preview.alphagov.co.uk",
-    "preview.authentication"         => "signon.preview.alphagov.co.uk",
     "preview.needs"                  => "needotron.preview.alphagov.co.uk",
     "preview.data"                   => "imminence.preview.alphagov.co.uk",
     "preview.assets"                 => "static.preview.alphagov.co.uk",
@@ -29,7 +27,6 @@ class Plek
     "preview.#{DEFAULT_PATTERN}"     => "%s.preview.alphagov.co.uk",
 
     "staging.frontend"               => "demo.alphagov.co.uk",
-    "staging.authentication"         => "signon.alpha.gov.uk",
     "staging.needs"                  => "needotron.alpha.gov.uk",
     "staging.publisher"              => "guides.staging.alphagov.co.uk",
     "staging.data"                   => "imminence.staging.alphagov.co.uk",
@@ -38,7 +35,6 @@ class Plek
     "staging.publication-preview"    => "private-frontend.staging.alphagov.co.uk",
     "staging.#{DEFAULT_PATTERN}"     => "%s.staging.alphagov.co.uk",
 
-    "development.authentication"     => "signon.dev.gov.uk",
     "development.needs"              => "needotron.dev.gov.uk",
     "development.data"               => "imminence.dev.gov.uk",
     "development.assets"             => "static.dev.gov.uk",
@@ -48,7 +44,6 @@ class Plek
     "development.publication-preview"=> "www.dev.gov.uk",
     "development.#{DEFAULT_PATTERN}" => "%s.dev.gov.uk",
 
-    "test.authentication"            => "signon.test.gov.uk",
     "test.needs"                     => "needotron.test.gov.uk",
     "test.data"                      => "imminence.test.gov.uk",
     "test.publication-preview"       => "www.test.gov.uk",
@@ -60,7 +55,6 @@ class Plek
 
   SERVICE_TOKENS = %w(
     frontend
-    authentication
     needs
     publisher
     data
@@ -69,7 +63,6 @@ class Plek
 
   PURPOSE_FOR_SERVICE = {
     "need-o-tron"    => "needs",
-    "signon"         => "authentication",
     "imminence"      => "data",
   }.freeze
 
@@ -123,7 +116,6 @@ class Plek
   # Currently we have these services:
   #
   #    frontend: Where the public can see our output.
-  #    authentication: Where we send staff so they can log in.
   #    publisher: Where we write content.
   #    needs: Where we record the needs that we're going to fulfill.
   #    data: Where our datasets live.
