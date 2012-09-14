@@ -9,7 +9,6 @@ class Plek
     "production.authentication"      => "signon.production.alphagov.co.uk",
     "production.needs"               => "needotron.production.alphagov.co.uk",
     "production.data"                => "imminence.production.alphagov.co.uk",
-    "production.arbiter"             => "panopticon.production.alphagov.co.uk",
     "production.assets"              => "static.production.alphagov.co.uk",
     "production.cdn"                 => "d17tffe05zdvwj.cloudfront.net",
     "production.publication-preview" => "private-frontend.production.alphagov.co.uk",
@@ -21,7 +20,6 @@ class Plek
     "preview.authentication"         => "signon.preview.alphagov.co.uk",
     "preview.needs"                  => "needotron.preview.alphagov.co.uk",
     "preview.data"                   => "imminence.preview.alphagov.co.uk",
-    "preview.arbiter"                => "panopticon.preview.alphagov.co.uk",
     "preview.assets"                 => "static.preview.alphagov.co.uk",
     "preview.cdn"                    => "djb1962t8apu5.cloudfront.net",
     "preview.publication-preview"    => "private-frontend.preview.alphagov.co.uk",
@@ -35,7 +33,6 @@ class Plek
     "staging.needs"                  => "needotron.alpha.gov.uk",
     "staging.publisher"              => "guides.staging.alphagov.co.uk",
     "staging.data"                   => "imminence.staging.alphagov.co.uk",
-    "staging.arbiter"                => "panopticon.staging.alphagov.co.uk",
     "staging.assets"                 => "static.staging.alphagov.co.uk",
     "staging.assets"                 => "static.staging.alphagov.co.uk",
     "staging.publication-preview"    => "private-frontend.staging.alphagov.co.uk",
@@ -44,7 +41,6 @@ class Plek
     "development.authentication"     => "signon.dev.gov.uk",
     "development.needs"              => "needotron.dev.gov.uk",
     "development.data"               => "imminence.dev.gov.uk",
-    "development.arbiter"            => "panopticon.dev.gov.uk",
     "development.assets"             => "static.dev.gov.uk",
     "development.cdn"                => "static.dev.gov.uk",
     "development.whitehall"          => "whitehall.dev.gov.uk",
@@ -55,7 +51,6 @@ class Plek
     "test.authentication"            => "signon.test.gov.uk",
     "test.needs"                     => "needotron.test.gov.uk",
     "test.data"                      => "imminence.test.gov.uk",
-    "test.arbiter"                   => "panopticon.test.gov.uk",
     "test.publication-preview"       => "www.test.gov.uk",
     "test.cdn"                       => "static.test.gov.uk",
     "test.whitehall"                 => "whitehall.test.alphagov.co.uk",
@@ -69,7 +64,6 @@ class Plek
     needs
     publisher
     data
-    arbiter
     search
   ).sort.freeze
 
@@ -77,7 +71,6 @@ class Plek
     "need-o-tron"    => "needs",
     "signon"         => "authentication",
     "imminence"      => "data",
-    "panopticon"     => "arbiter"
   }.freeze
 
   SERVICE_NAMES = %w(
@@ -134,7 +127,6 @@ class Plek
   #    publisher: Where we write content.
   #    needs: Where we record the needs that we're going to fulfill.
   #    data: Where our datasets live.
-  #    arbiter: organises data shared between the applications
   #
   def find service
     name = name_for service
