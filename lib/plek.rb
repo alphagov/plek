@@ -95,19 +95,6 @@ class Plek
     self.environment = environment
   end
 
-  def to_xml
-    io = StringIO.new
-    builder = Builder::XmlMarkup.new :target => io, :spacing => 2
-    builder.services :environment => environment do |services|
-      SERVICE_TOKENS.each do |token|
-        uri = find token
-        services.service :token => token, :uri => uri
-      end
-    end
-    io.rewind
-    io.string
-  end
-
   # Find the URI for a service.
   #
   # Services don't map directly to applications since we may replace an
