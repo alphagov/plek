@@ -53,27 +53,6 @@ class Plek
     "test.#{DEFAULT_PATTERN}"        => "%s.test.gov.uk",
   }.freeze
 
-  SERVICE_NAMES = %w(
-    panopticon
-    signon
-    imminence
-    publisher
-    need-o-tron
-    frontend
-    search
-    tariff
-  ).sort.freeze
-
-  SERVICE_NAMES.each do |service_name|
-    # Backward compatibility
-    method_name = service_name.gsub(/[^a-z]+/, '_')
-    define_method method_name do
-      puts "Plek##{method_name} is deprecated and will be removed in an " +
-           "upcoming release.\nUse `Plek#find('#{service_name}')` instead."
-      find name
-    end
-  end
-
   attr_accessor :environment
   private :environment=
 
