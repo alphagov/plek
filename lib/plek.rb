@@ -53,19 +53,6 @@ class Plek
     "test.#{DEFAULT_PATTERN}"        => "%s.test.gov.uk",
   }.freeze
 
-  SERVICE_TOKENS = %w(
-    frontend
-    needs
-    publisher
-    data
-    search
-  ).sort.freeze
-
-  PURPOSE_FOR_SERVICE = {
-    "need-o-tron"    => "needs",
-    "imminence"      => "data",
-  }.freeze
-
   SERVICE_NAMES = %w(
     panopticon
     signon
@@ -81,9 +68,8 @@ class Plek
     # Backward compatibility
     method_name = service_name.gsub(/[^a-z]+/, '_')
     define_method method_name do
-      name = PURPOSE_FOR_SERVICE[service_name] || service_name
       puts "Plek##{method_name} is deprecated and will be removed in an " +
-           "upcoming release.\nUse `Plek#find('#{name}')` instead."
+           "upcoming release.\nUse `Plek#find('#{service_name}')` instead."
       find name
     end
   end
