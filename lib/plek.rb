@@ -60,19 +60,8 @@ class Plek
     self.environment = environment
   end
 
-  # Find the URI for a service.
-  #
-  # Services don't map directly to applications since we may replace an
-  # application but retain the service.
-  #
-  # Currently we have these services:
-  #
-  #    frontend: Where the public can see our output.
-  #    publisher: Where we write content.
-  #    needs: Where we record the needs that we're going to fulfill.
-  #    data: Where our datasets live.
-  #
-  def find service
+  # Find the URI for a service/application.
+  def find(service)
     name = name_for service
     host = SERVICES[service_key_for(name)]
     host ||= SERVICES["#{environment}.#{DEFAULT_PATTERN}"].to_s % name
