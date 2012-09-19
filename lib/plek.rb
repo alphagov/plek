@@ -56,7 +56,7 @@ class Plek
     host = SERVICES[service_key_for(name)]
     host ||= SERVICES["#{environment}.#{DEFAULT_PATTERN}"].to_s % name
 
-    if (environment == 'preview' or environment == 'production')
+    if environment == 'preview' || environment == 'production'
       "https://#{host}"
     else
       "http://#{host}"
