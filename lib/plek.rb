@@ -55,22 +55,12 @@ class Plek
     name = name_for service
     host = SERVICES[service_key_for(name)]
     host ||= SERVICES["#{environment}.#{DEFAULT_PATTERN}"].to_s % name
-    # FIXME: *Everything* should be SSL
-    if whitehall?(service) or search?(service)
-      "http://#{host}"
-    elsif (environment == 'preview' or environment == 'production')
+
+    if (environment == 'preview' or environment == 'production')
       "https://#{host}"
     else
       "http://#{host}"
     end
-  end
-
-  def whitehall?(service)
-    /^whitehall/.match(service)
-  end
-
-  def search?(service)
-    service == 'search' or service == 'rummager'
   end
 
   def service_key_for name
