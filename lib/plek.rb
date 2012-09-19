@@ -46,7 +46,7 @@ class Plek
   attr_accessor :environment
   private :environment=
 
-  def initialize environment
+  def initialize(environment)
     self.environment = environment
   end
 
@@ -63,11 +63,11 @@ class Plek
     end
   end
 
-  def service_key_for name
+  def service_key_for(name)
     "#{environment}.#{name}"
   end
 
-  def name_for service
+  def name_for(service)
     name = service.to_s.dup
     name.downcase!
     name.strip!
