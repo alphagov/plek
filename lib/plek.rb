@@ -30,8 +30,6 @@ class Plek
 
     "test.publication-preview"       => "www.test.gov.uk",
     "test.cdn"                       => "static.test.gov.uk",
-    "test.whitehall"                 => "whitehall.test.alphagov.co.uk",
-    "test.whitehall-search"          => "whitehall-search.test.alphagov.co.uk",
     "test.#{DEFAULT_PATTERN}"        => "%s.test.gov.uk",
   }.freeze
 
