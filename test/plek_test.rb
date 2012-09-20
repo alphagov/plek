@@ -7,7 +7,7 @@ require "uri"
 class PlekTest < Test::Unit::TestCase
   def test_should_return_whitehall_test_host_domain
     whitehall_url = Plek.new("test").find("whitehall")
-    assert_equal "whitehall.test.alphagov.co.uk", URI.parse(whitehall_url).host
+    assert_equal "whitehall.test.gov.uk", URI.parse(whitehall_url).host
   end
 
   def test_should_return_whitehall_preview_host_domain
@@ -22,7 +22,7 @@ class PlekTest < Test::Unit::TestCase
 
   def test_should_return_whitehall_search_test_host_domain
     whitehall_search_url = Plek.new("test").find("whitehall-search")
-    assert_equal "whitehall-search.test.alphagov.co.uk", URI.parse(whitehall_search_url).host
+    assert_equal "whitehall-search.test.gov.uk", URI.parse(whitehall_search_url).host
   end
 
   def test_should_return_whitehall_search_preview_host_domain
