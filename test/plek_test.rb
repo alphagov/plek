@@ -20,21 +20,6 @@ class PlekTest < Test::Unit::TestCase
     assert_equal "whitehall.production.alphagov.co.uk", URI.parse(whitehall_url).host
   end
 
-  def test_should_return_whitehall_search_test_host_domain
-    whitehall_search_url = Plek.new("test").find("whitehall-search")
-    assert_equal "whitehall-search.test.gov.uk", URI.parse(whitehall_search_url).host
-  end
-
-  def test_should_return_whitehall_search_preview_host_domain
-    whitehall_search_url = Plek.new("preview").find("whitehall-search")
-    assert_equal "whitehall-search.preview.alphagov.co.uk", URI.parse(whitehall_search_url).host
-  end
-
-  def test_should_return_whitehall_search_production_host_domain
-    whitehall_search_url = Plek.new("production").find("whitehall-search")
-    assert_equal "whitehall-search.production.alphagov.co.uk", URI.parse(whitehall_search_url).host
-  end
-
   def test_should_return_non_whitehall_preview_host_url_as_ssl
     url = Plek.new("preview").find("non-whitehall-service")
     assert_equal "https", URI.parse(url).scheme
