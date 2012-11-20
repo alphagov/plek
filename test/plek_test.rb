@@ -41,7 +41,7 @@ class PlekTest < Test::Unit::TestCase
   end
 
   def test_should_return_subdomain_divided_source_in_dev
-    url = Plek.new.find("explore.reviewomatic")
+    url = Plek.new("dev.gov.uk").find("explore.reviewomatic")
     assert_equal "http://explore.reviewomatic.dev.gov.uk", url
   end
 
@@ -56,7 +56,7 @@ class PlekTest < Test::Unit::TestCase
   end
 
   def test_should_return_dash_divided_source_in_dev
-    url = Plek.new.find("explore-reviewomatic")
+    url = Plek.new("dev.gov.uk").find("explore-reviewomatic")
     assert_equal "http://explore-reviewomatic.dev.gov.uk", url
   end
 
