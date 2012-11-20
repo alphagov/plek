@@ -1,0 +1,5 @@
+1.0.0
+
+  * Removed all overrides and rely solely on convention and environment variables
+  * Removed Plek#environment and Plek.current in favour of standard constructions
+  * To upgrade:
