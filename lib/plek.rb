@@ -31,4 +31,12 @@ class Plek
     name.gsub!(/[^a-z\.-]+/, '')
     name
   end
+
+  class << self
+    # This alias allows calls to be made in the old style:
+    #     Plek.current.find('foo')
+    # as well as the new style:
+    #     Plek.new.find('foo')
+    alias_method :current, :new
+  end
 end

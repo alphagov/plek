@@ -70,4 +70,7 @@ class PlekTest < Test::Unit::TestCase
     assert_equal "https://explore-reviewomatic.production.alphagov.co.uk", url
   end
 
+  def test_should_be_able_to_use_current_for_old_style_calls
+    assert_equal Plek.new.find("foo"), Plek.current.find("foo")
+  end
 end
