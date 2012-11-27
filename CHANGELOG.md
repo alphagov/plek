@@ -16,7 +16,13 @@ CHANGELOG
       specifies the mapit url by having different initializers per environment
       rather than by querying Plek.current.environment at runtime.
   * If using Plek.new e.g Plek.new(env_name).find(app) which would use Plek.current.environment to source the url. Instead we now pass a domain explicitly: Plek.new('dev.gov.uk').find(app).
-  * If using Plek.current.find(special_case) e.g. Plek.current.find('cdn'), check whether this is still relevant and what alternative should be used (such as hardcoding an 'if dev' case). Other such special cases include: www, assets, cdn, publication-preview.
+  * If using Plek.current.find:
+    * The old special cases have gone. You will need to change code as follows:
+      * 'cdn': use the GOVUK_ASSET_HOST environment variable
+      * 'www': TBD
+      * 'assets': use 'static'
+      * 'publication-preview': use private-frontend instead
+    * For all other cases, Plek.current.find will continue to work as before.
 
   * If you're using:
     *   gds-api-adapters ensure you upgrade to at least 4.0.0
