@@ -18,10 +18,10 @@ CHANGELOG
   * If using Plek.new e.g Plek.new(env_name).find(app) which would use Plek.current.environment to source the url. Instead we now pass a domain explicitly: Plek.new('dev.gov.uk').find(app).
   * If using Plek.current.find:
     * The old special cases have gone. You will need to change code as follows:
-      * 'cdn': use the GOVUK_ASSET_HOST environment variable
-      * 'www': TBD
-      * 'assets': use 'static'
-      * 'publication-preview': use private-frontend instead
+      * 'cdn': use the GOVUK_ASSET_ROOT environment variable
+      * 'www': use the GOVUK_WEBSITE_ROOT environment variable
+      * 'assets': use Plek.current.find('static')
+      * 'publication-preview': use Plek.current.find('private-frontend')
     * For all other cases, Plek.current.find will continue to work as before.
 
   * If you're using:
