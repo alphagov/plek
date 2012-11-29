@@ -7,7 +7,7 @@ CHANGELOG
 ## To upgrade:
 
   * If you are using `Plek.current.environment`:
-    * if it's for an api-adapter, you should upgrade to gds-api-adapters >= 4.0.0
+    * if it's for an api-adapter, you should upgrade to gds-api-adapters >= 4.1.3
       and pass in the URL eg change `GdsApi::ContentApi.new(Plek.current.environment)` to
       `GdsApi::ContentApi.new(Plek.current.find('contentapi'))`
     * if it's for something else, consider if the configuration can instead be passed
@@ -25,5 +25,5 @@ CHANGELOG
     * For all other cases, `Plek.current.find` will continue to work as before.
 
   * If you're using:
-    *   gds-api-adapters ensure you upgrade to at least 4.0.0
-    *   govuk_content_models ensure you upgrade to at least 2.4.0
+    *   gds-api-adapters ensure you upgrade to at least 4.1.3
+    *   govuk_content_models ensure you upgrade to at least 2.5.0
