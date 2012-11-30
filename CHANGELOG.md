@@ -6,6 +6,7 @@ CHANGELOG
 
 ## To upgrade:
 
+  * There's a lot here. If you are confused about anything, please talk to the Infrastructure & Tools team.
   * If you are using `Plek.current.environment`:
     * if it's for an api-adapter, you should upgrade to gds-api-adapters >= 4.1.3
       and pass in the URL eg change `GdsApi::ContentApi.new(Plek.current.environment)` to
@@ -27,10 +28,18 @@ CHANGELOG
   * If you're using:
     *   gds-api-adapters ensure you upgrade to at least 4.1.3
     *   govuk_content_models ensure you upgrade to at least 2.5.0
-  * Remember to check not only your app code but also any initializers it may be configured with by capistrano!
-  * Finally, if you are using whenever, you will want to add the following code to your schedule.rb in order to set the environment correctly for your cron jobs. This is important because the new Plek uses GOVUK_APP_DOMAIN to find apps, and `govuk_setenv` is the way we set this environment variable:
-
+  * Remember to check not only your app code for Plek usages, but also any initializers it may be configured with capistrano!
+  * Plek no longer understands the `test.gov.uk` URLs; all URLs should be `dev.gov.uk` instead. Tests which assumed `test.gov.uk` should be changed to reflect this.
+  * Because plek uses environment variables to configure itself, you will need to set up the correct environment, or plek will fail. Puppet provides a script called `govuk_setenv` to set up the environment correctly for each app.
+    * Yes, this is a pain. We would like to work with people to make this less onerous, perhaps by providing some standardized bash aliases.
+    * For running tests and other rake tasks, run this:
+```
+govuk_setenv $APP_NAME bundle exec rake
+```
+    * For running the app through foreman, simply prepend the existing Procfile command with `govuk_setenv <app-name>`, replacing <app-name> with the actual app name
+    * For running rake tasks as part of a capistrano deployment (TBD)
+    * If you are using whenever, you will want to add the following code to your schedule.rb:
 ```ruby
-set :job_template, "/usr/local/bin/govuk_setenv publisher /bin/bash -l -c ':job'"
+set :job_template, "/usr/local/bin/govuk_setenv #{APP_NAME} /bin/bash -l -c ':job'"
 ```
 
