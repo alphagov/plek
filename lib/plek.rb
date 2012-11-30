@@ -2,14 +2,14 @@ require 'builder'
 require 'plek/version'
 
 class Plek
+  class NoConfigurationError < StandardError; end
   DEFAULT_PATTERN = "pattern".freeze
-  DEFAULT_DOMAIN = ENV['GOVUK_APP_DOMAIN'] || 'test.gov.uk'
-  HTTP_DOMAINS = ['test.gov.uk', 'dev.gov.uk']
+  HTTP_DOMAINS = ['dev.gov.uk']
 
   attr_accessor :parent_domain
 
   def initialize(domain_to_use = nil)
-    self.parent_domain = domain_to_use || DEFAULT_DOMAIN
+    self.parent_domain = domain_to_use || ENV['GOVUK_APP_DOMAIN'] || raise(NoConfigurationError, 'Expected GOVUK_APP_DOMAIN to be set. Perhaps you should run your task through govuk_setenv <appname>?')
   end
 
   # Find the URI for a service/application.

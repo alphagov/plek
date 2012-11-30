@@ -30,7 +30,8 @@ class PlekTest < Test::Unit::TestCase
     assert_equal "https", URI.parse(url).scheme
   end
 
-  def test_should_return_non_whitehall_non_preview_and_non_production_host_url_as_non_ssl
+  def test_should_magically_return_http_for_dev_gov_uk
+    ENV['GOVUK_APP_DOMAIN'] = 'dev.gov.uk'
     url = Plek.new.find("non-whitehall-service")
     assert_equal "http", URI.parse(url).scheme
   end
@@ -71,6 +72,7 @@ class PlekTest < Test::Unit::TestCase
   end
 
   def test_should_be_able_to_use_current_for_old_style_calls
+    ENV['GOVUK_APP_DOMAIN'] = 'foo.bar.baz'
     assert_equal Plek.new.find("foo"), Plek.current.find("foo")
   end
 end
