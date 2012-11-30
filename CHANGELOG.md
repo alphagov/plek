@@ -30,5 +30,7 @@ CHANGELOG
   * Remember to check not only your app code but also any initializers it may be configured with by capistrano!
   * Finally, if you are using whenever, you will want to add the following code to your schedule.rb in order to set the environment correctly for your cron jobs. This is important because the new Plek uses GOVUK_APP_DOMAIN to find apps, and `govuk_setenv` is the way we set this environment variable:
 
-    set :job_template, "/usr/local/bin/govuk_setenv publisher /bin/bash -l -c ':job'"
+```ruby
+set :job_template, "/usr/local/bin/govuk_setenv publisher /bin/bash -l -c ':job'"
+```
 
