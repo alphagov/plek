@@ -2,59 +2,26 @@ require 'builder'
 require 'plek/version'
 
 class Plek
+  class NoConfigurationError < StandardError; end
   DEFAULT_PATTERN = "pattern".freeze
+  HTTP_DOMAINS = ['dev.gov.uk']
 
-  SERVICES = {
-    "production.www"                 => "www.gov.uk",
-    "production.assets"              => "static.production.alphagov.co.uk",
-    "production.cdn"                 => "d17tffe05zdvwj.cloudfront.net",
-    "production.publication-preview" => "private-frontend.production.alphagov.co.uk",
-    "production.#{DEFAULT_PATTERN}"  => "%s.production.alphagov.co.uk",
+  attr_accessor :parent_domain
 
-    "preview.www"                    => "www.preview.alphagov.co.uk",
-    "preview.assets"                 => "static.preview.alphagov.co.uk",
-    "preview.cdn"                    => "djb1962t8apu5.cloudfront.net",
-    "preview.publication-preview"    => "private-frontend.preview.alphagov.co.uk",
-    "preview.#{DEFAULT_PATTERN}"     => "%s.preview.alphagov.co.uk",
-
-    "staging.frontend"               => "demo.alphagov.co.uk",
-    "staging.publisher"              => "guides.staging.alphagov.co.uk",
-    "staging.assets"                 => "static.staging.alphagov.co.uk",
-    "staging.publication-preview"    => "private-frontend.staging.alphagov.co.uk",
-    "staging.#{DEFAULT_PATTERN}"     => "%s.staging.alphagov.co.uk",
-
-    "development.assets"             => "static.dev.gov.uk",
-    "development.cdn"                => "static.dev.gov.uk",
-    "development.publication-preview"=> "www.dev.gov.uk",
-    "development.#{DEFAULT_PATTERN}" => "%s.dev.gov.uk",
-
-    "test.publication-preview"       => "www.test.gov.uk",
-    "test.cdn"                       => "static.test.gov.uk",
-    "test.#{DEFAULT_PATTERN}"        => "%s.test.gov.uk",
-  }.freeze
-
-  attr_accessor :environment
-  private :environment=
-
-  def initialize(environment)
-    self.environment = environment
+  def initialize(domain_to_use = nil)
+    self.parent_domain = domain_to_use || ENV['GOVUK_APP_DOMAIN'] || raise(NoConfigurationError, 'Expected GOVUK_APP_DOMAIN to be set. Perhaps you should run your task through govuk_setenv <appname>?')
   end
 
   # Find the URI for a service/application.
   def find(service)
-    name = name_for service
-    host = SERVICES[service_key_for(name)]
-    host ||= SERVICES["#{environment}.#{DEFAULT_PATTERN}"].to_s % name
+    name = name_for(service)
+    host = "#{name}.#{parent_domain}"
 
-    if environment == 'preview' || environment == 'production'
-      "https://#{host}"
-    else
+    if HTTP_DOMAINS.include?(parent_domain)
       "http://#{host}"
+    else
+      "https://#{host}"
     end
-  end
-
-  def service_key_for(name)
-    "#{environment}.#{name}"
   end
 
   def name_for(service)
@@ -65,15 +32,11 @@ class Plek
     name
   end
 
-  def self.current_env
-    if (ENV['RAILS_ENV'] || ENV['RACK_ENV']) == 'test'
-      'test'
-    else
-      ENV['FACTER_govuk_platform'] || ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development'
-    end
-  end
-
-  def self.current
-    Plek.new(current_env)
+  class << self
+    # This alias allows calls to be made in the old style:
+    #     Plek.current.find('foo')
+    # as well as the new style:
+    #     Plek.new.find('foo')
+    alias_method :current, :new
   end
 end
