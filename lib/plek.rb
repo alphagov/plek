@@ -9,7 +9,7 @@ class Plek
   attr_accessor :parent_domain
 
   def initialize(domain_to_use = nil)
-    self.parent_domain = domain_to_use || ENV['GOVUK_APP_DOMAIN'] || raise(NoConfigurationError, 'Expected GOVUK_APP_DOMAIN to be set. Perhaps you should run your task through govuk_setenv <appname>?')
+    self.parent_domain = domain_to_use || self.class.default_parent_domain || ENV['GOVUK_APP_DOMAIN'] || raise(NoConfigurationError, 'Expected GOVUK_APP_DOMAIN to be set. Perhaps you should run your task through govuk_setenv <appname>?')
   end
 
   # Find the URI for a service/application.
@@ -38,5 +38,10 @@ class Plek
     # as well as the new style:
     #     Plek.new.find('foo')
     alias_method :current, :new
+
+    # Allow setting a class-level default domain to use when none is given
+    # This is intended to be used in test setups to insulate the tests from the environment
+    @default_parent_domain = nil
+    attr_accessor :default_parent_domain
   end
 end

@@ -75,4 +75,26 @@ class PlekTest < Test::Unit::TestCase
     ENV['GOVUK_APP_DOMAIN'] = 'foo.bar.baz'
     assert_equal Plek.new.find("foo"), Plek.current.find("foo")
   end
+
+  def test_should_allow_setting_default_parent_domain
+    Plek.default_parent_domain = 'foo.gov.uk'
+    assert_equal 'https://static.foo.gov.uk', Plek.new.find('static')
+  ensure
+    Plek.default_parent_domain = nil
+  end
+
+  def test_default_parent_domain_should_override_env
+    Plek.default_parent_domain = 'foo.gov.uk'
+    ENV['GOVUK_APP_DOMAIN'] = 'bar.gov.uk'
+    assert_equal 'https://static.foo.gov.uk', Plek.new.find('static')
+  ensure
+    Plek.default_parent_domain = nil
+  end
+
+  def test_default_parent_domain_should_not_override_given_domain
+    Plek.default_parent_domain = 'foo.gov.uk'
+    assert_equal 'https://static.bar.gov.uk', Plek.new('bar.gov.uk').find('static')
+  ensure
+    Plek.default_parent_domain = nil
+  end
 end
