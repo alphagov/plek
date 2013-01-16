@@ -9,7 +9,7 @@ class Plek
   attr_accessor :parent_domain
 
   def initialize(domain_to_use = nil)
-    self.parent_domain = ENV['GOVUK_APP_DOMAIN'] || default_parent_domain
+    self.parent_domain = domain_to_use || ENV['GOVUK_APP_DOMAIN'] || default_parent_domain
   end
 
   # Find the URI for a service/application.
