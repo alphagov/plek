@@ -24,6 +24,10 @@ class Plek
     end
   end
 
+  def website_root
+    ENV['GOVUK_WEBSITE_ROOT'] || default_website_root
+  end
+
   def name_for(service)
     name = service.to_s.dup
     name.downcase!
@@ -47,6 +51,14 @@ class Plek
       raise(NoConfigurationError, 'Expected GOVUK_APP_DOMAIN to be set. Perhaps you should run your task through govuk_setenv <appname>?')
     else
       'dev.gov.uk'
+    end
+  end
+
+  def default_website_root
+    if ENV['RAILS_ENV'] == 'production' || ENV['RACK_ENV'] == 'production'
+      raise(NoConfigurationError, 'Expected GOVUK_WEBSITE_ROOT to be set. Perhaps you should run your task through govuk_setenv <appname>?')
+    else
+      find('www')
     end
   end
 end
