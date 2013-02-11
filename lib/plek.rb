@@ -9,7 +9,7 @@ class Plek
   attr_accessor :parent_domain
 
   def initialize(domain_to_use = nil)
-    self.parent_domain = domain_to_use || env_var_or_dev_fallback('GOVUK_APP_DOMAIN', 'dev.gov.uk')
+    self.parent_domain = domain_to_use || env_var_or_dev_fallback("GOVUK_APP_DOMAIN", "dev.gov.uk")
   end
 
   # Find the URI for a service/application.
@@ -25,7 +25,7 @@ class Plek
   end
 
   def website_root
-    env_var_or_dev_fallback('GOVUK_WEBSITE_ROOT') { find('www') }
+    env_var_or_dev_fallback("GOVUK_WEBSITE_ROOT") { find("www") }
   end
 
   def name_for(service)
@@ -49,7 +49,7 @@ class Plek
   def env_var_or_dev_fallback(var_name, fallback_str = nil)
     if var = ENV[var_name]
       var
-    elsif ENV['RAILS_ENV'] == 'production' || ENV['RACK_ENV'] == 'production'
+    elsif ENV["RAILS_ENV"] == "production" || ENV["RACK_ENV"] == "production"
       raise(NoConfigurationError, "Expected #{var_name} to be set. Perhaps you should run your task through govuk_setenv <appname>?")
     elsif block_given?
       yield
