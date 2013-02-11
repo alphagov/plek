@@ -1,10 +1,6 @@
-require "test/unit"
+require_relative "test_helper"
 
-$LOAD_PATH.unshift("../lib")
-require "plek"
-require "uri"
-
-class PlekTest < Test::Unit::TestCase
+class PlekTest < MiniTest::Unit::TestCase
   def test_should_return_whitehall_test_host_domain
     whitehall_url = Plek.new("test.gov.uk").find("whitehall")
     assert_equal "whitehall.test.gov.uk", URI.parse(whitehall_url).host
