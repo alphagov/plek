@@ -1,13 +1,13 @@
 require_relative "test_helper"
 
 describe Plek do
-  before do
-    ENV.delete("GOVUK_WEBSITE_ROOT")
-    ENV.delete("RAILS_ENV")
-    ENV.delete("RACK_ENV")
-  end
-
   describe "retreiving the website_root" do
+    before do
+      ENV.delete("GOVUK_WEBSITE_ROOT")
+      ENV.delete("RAILS_ENV")
+      ENV.delete("RACK_ENV")
+    end
+
     it "should return the GOVUK_WEBSITE_ROOT env variable" do
       ENV["GOVUK_WEBSITE_ROOT"] = "https://www.test.gov.uk"
       assert_equal "https://www.test.gov.uk", Plek.new("foo.gov.uk").website_root
