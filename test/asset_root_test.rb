@@ -9,8 +9,8 @@ describe Plek do
 
   describe "retreiving the asset_host" do
     it "should return the GOVUK_ASSET_ROOT env variable" do
-      ENV["GOVUK_ASSET_ROOT"] = "http://static.dev.gov.uk"
-      assert_equal "http://static.dev.gov.uk", Plek.new("foo.gov.uk").asset_root
+      ENV["GOVUK_ASSET_ROOT"] = "http://foo.cloudfront.com"
+      assert_equal "http://foo.cloudfront.com", Plek.new("foo.gov.uk").asset_root
     end
 
     describe "When GOVUK_ASSET_ROOT env variable isn't set" do
