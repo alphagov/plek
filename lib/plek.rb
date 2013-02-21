@@ -24,6 +24,10 @@ class Plek
     end
   end
 
+  def asset_root
+    env_var_or_dev_fallback("GOVUK_ASSET_ROOT") { find("static") }
+  end
+
   def website_root
     env_var_or_dev_fallback("GOVUK_WEBSITE_ROOT") { find("www") }
   end
