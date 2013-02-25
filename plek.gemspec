@@ -15,7 +15,6 @@ Gem::Specification.new do |s|
 
   s.files        = Dir.glob("lib/**/*") + %w(README.md)
   s.require_path = 'lib'
-  s.add_runtime_dependency 'builder'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'gem_publisher', '~> 1.1.1'
 end
