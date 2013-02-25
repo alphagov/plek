@@ -1,4 +1,3 @@
-require 'builder'
 require 'plek/version'
 
 class Plek
