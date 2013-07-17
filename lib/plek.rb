@@ -3,12 +3,13 @@ require 'plek/version'
 class Plek
   class NoConfigurationError < StandardError; end
   DEFAULT_PATTERN = "pattern".freeze
-  HTTP_DOMAINS = ['dev.gov.uk']
+  DEV_DOMAIN = ENV['DEV_DOMAIN'] || 'dev.gov.uk'
+  HTTP_DOMAINS = [ DEV_DOMAIN ]
 
   attr_accessor :parent_domain
 
   def initialize(domain_to_use = nil)
-    self.parent_domain = domain_to_use || env_var_or_dev_fallback("GOVUK_APP_DOMAIN", "dev.gov.uk")
+    self.parent_domain = domain_to_use || env_var_or_dev_fallback("GOVUK_APP_DOMAIN", DEV_DOMAIN)
   end
 
   # Find the URI for a service/application.
