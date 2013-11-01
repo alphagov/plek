@@ -13,11 +13,11 @@ class Plek
   end
 
   # Find the URI for a service/application.
-  def find(service)
+  def find(service, options = {})
     name = name_for(service)
     host = "#{name}.#{parent_domain}"
 
-    if HTTP_DOMAINS.include?(parent_domain)
+    if options[:force_http] or HTTP_DOMAINS.include?(parent_domain)
       "http://#{host}"
     else
       "https://#{host}"
