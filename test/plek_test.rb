@@ -32,6 +32,11 @@ class PlekTest < MiniTest::Unit::TestCase
     assert_equal "http", URI.parse(url).scheme
   end
 
+  def test_should_return_http_when_requested
+    url = Plek.new("production.alphagov.co.uk").find("non-whitehall-service", :force_http => true)
+    assert_equal "http", URI.parse(url).scheme
+  end
+
   def test_should_return_tariff_preview_host_domain
     tariff_url = Plek.new("preview.alphagov.co.uk").find("tariff")
     assert_equal "https://tariff.preview.alphagov.co.uk", tariff_url
