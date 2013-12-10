@@ -4,6 +4,8 @@ describe Plek do
   describe "overriding the uri for a service" do
     before do
       ENV.delete("PLEK_SERVICE_FOO_URI")
+      ENV.delete("PLEK_SERVICE_BAR_URI")
+      ENV.delete("GOVUK_APP_DOMAIN")
     end
 
     it "looks for an env variable matching the service name and returns its value when present" do
