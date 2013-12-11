@@ -15,6 +15,10 @@ class Plek
   # Find the URI for a service/application.
   def find(service, options = {})
     name = name_for(service)
+    if service_uri = defined_service_uri_for(name)
+      return service_uri
+    end
+
     host = "#{name}.#{parent_domain}"
 
     if options[:force_http] or HTTP_DOMAINS.include?(parent_domain)
@@ -60,5 +64,15 @@ class Plek
     else
       fallback_str
     end
+  end
+
+  def defined_service_uri_for(service)
+    service_name = service.upcase.gsub(/-/,'_')
+    var_name = "PLEK_SERVICE_#{service_name}_URI"
+
+    if (uri = ENV[var_name] and ! uri.empty?)
+      return uri
+    end
+    return nil
   end
 end
