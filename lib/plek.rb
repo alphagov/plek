@@ -70,7 +70,7 @@ class Plek
     service_name = service.upcase.sub(/\-/,'_')
     var_name = "PLEK_SERVICE_#{service_name}_URI"
 
-    if uri = ENV[var_name] and ! uri.empty?
+    if (uri = ENV[var_name] and ! uri.empty?)
       return uri
     end
     return nil
