@@ -67,7 +67,7 @@ class Plek
   end
 
   def defined_service_uri_for(service)
-    service_name = service.upcase.sub(/\-/,'_')
+    service_name = service.upcase.gsub(/-/,'_')
     var_name = "PLEK_SERVICE_#{service_name}_URI"
 
     if (uri = ENV[var_name] and ! uri.empty?)
