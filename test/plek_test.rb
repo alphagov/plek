@@ -78,7 +78,7 @@ class PlekTest < MiniTest::Unit::TestCase
   end
 
   def test_scheme_relative_urls
-    url = Plek.new.find("service", scheme_relative: true)
+    url = Plek.new("dev.gov.uk").find("service", scheme_relative: true)
     assert_equal "//service.dev.gov.uk", url
   end
 
