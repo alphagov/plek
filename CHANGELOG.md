@@ -1,5 +1,33 @@
 # CHANGELOG
 
+# 1.6.0
+
+  * Allow custom service URLs through individual environment variables
+
+# 1.5.0
+
+  * Allow clients to request HTTP URLs
+
+# 1.4.0
+
+  * Allow overriding the development domain through an environment variable
+
+# 1.3.1
+
+  * Clean up a redundant dependency on the Builder gem
+
+# 1.3.0
+
+  * Add the `asset_root` method for an environment's static assets
+
+# 1.2.0
+
+  * Add the `website_root` method for an environment's web root
+
+# 1.1.0
+
+  * Provide a sensible default app domain in development
+
 # 1.0.0
 
   * Removed all overrides and rely solely on convention and environment variables
