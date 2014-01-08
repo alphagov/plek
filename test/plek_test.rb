@@ -76,4 +76,10 @@ class PlekTest < MiniTest::Unit::TestCase
     ENV['GOVUK_APP_DOMAIN'] = 'foo.bar.baz'
     assert_equal Plek.new.find("foo"), Plek.current.find("foo")
   end
+
+  def test_scheme_relative_urls
+    url = Plek.new("dev.gov.uk").find("service", scheme_relative: true)
+    assert_equal "//service.dev.gov.uk", url
+  end
+
 end
