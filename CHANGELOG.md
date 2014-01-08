@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 1.7.0
+
+  * Allow clients to request scheme-relative URLs
+
 # 1.6.0
 
   * Allow custom service URLs through individual environment variables
