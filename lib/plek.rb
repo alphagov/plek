@@ -21,7 +21,9 @@ class Plek
 
     host = "#{name}.#{parent_domain}"
 
-    if options[:force_http] or HTTP_DOMAINS.include?(parent_domain)
+    if options[:scheme_relative]
+      "//#{host}"
+    elsif options[:force_http] or HTTP_DOMAINS.include?(parent_domain)
       "http://#{host}"
     else
       "https://#{host}"
