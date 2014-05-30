@@ -12,10 +12,10 @@ returns `https://frontend.production.alphagov.co.uk`. This means we can use this
 Hacking Plek URLs
 -----------------
 
-Plek allows one to alter the URL returned using environment variables, eg:
+Plek allows one to alter the URI returned using environment variables, eg:
 
 ```shell
-PLEK_SERVICE_EXAMPLECHEESETHING_URL=http://example.com bundle exec rails s
+PLEK_SERVICE_EXAMPLE_CHEESE_THING_URI=http://example.com bundle exec rails s
 ```
 
 would set
@@ -24,4 +24,4 @@ would set
 Plek.current.find('example-cheese-thing')
 ```
 
-to `http://example.com`. Underscores and dashes in Plek names are collapsed in the environment variable as demonstrated.
+to `http://example.com`. Underscores in environment variables are converted to dashes in Plek names as demonstrated.
