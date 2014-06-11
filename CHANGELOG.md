@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 1.8.0
+
+  * Add `website_uri` and `asset_uri` methods for accessing URI objects
+
 # 1.7.0
 
   * Allow clients to request scheme-relative URLs
