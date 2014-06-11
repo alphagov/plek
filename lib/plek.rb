@@ -1,4 +1,5 @@
 require 'plek/version'
+require 'uri'
 
 class Plek
   class NoConfigurationError < StandardError; end
@@ -36,6 +37,14 @@ class Plek
 
   def website_root
     env_var_or_dev_fallback("GOVUK_WEBSITE_ROOT") { find("www") }
+  end
+
+  def asset_uri
+    URI(asset_root)
+  end
+
+  def website_uri
+    URI(website_root)
   end
 
   def name_for(service)
