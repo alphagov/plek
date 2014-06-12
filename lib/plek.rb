@@ -3,7 +3,6 @@ require 'uri'
 
 class Plek
   class NoConfigurationError < StandardError; end
-  DEFAULT_PATTERN = "pattern".freeze
   DEV_DOMAIN = ENV['DEV_DOMAIN'] || 'dev.gov.uk'
   HTTP_DOMAINS = [ DEV_DOMAIN ]
 
