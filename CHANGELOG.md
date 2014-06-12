@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 1.8.1
+
+  * Remove unused `DEFAULT_PATTERN` constant.
+
 # 1.8.0
 
   * Add `website_uri` and `asset_uri` methods for accessing URI objects
