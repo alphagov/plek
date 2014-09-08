@@ -60,6 +60,10 @@ class Plek
     # as well as the new style:
     #     Plek.new.find('foo')
     alias_method :current, :new
+
+    def find(*args)
+      new.find(*args)
+    end
   end
 
   private
