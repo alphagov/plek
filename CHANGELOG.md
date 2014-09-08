@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 1.9.0
+
+  * Add `Plek.find` to simplify client interface.
+
 # 1.8.1
 
   * Remove unused `DEFAULT_PATTERN` constant.
