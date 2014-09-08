@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 1.9.0
+
+  * Add `Plek.find` to simplify client interface.
+
 # 1.8.1
 
   * Remove unused `DEFAULT_PATTERN` constant.
@@ -101,5 +105,3 @@
       want to add the following code to your schedule.rb:
 
             set :job_template, "/usr/local/bin/govuk_setenv <appname> /bin/bash -l -c ':job'"
-
-
