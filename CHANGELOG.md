@@ -101,5 +101,3 @@
       want to add the following code to your schedule.rb:
 
             set :job_template, "/usr/local/bin/govuk_setenv <appname> /bin/bash -l -c ':job'"
-
-
