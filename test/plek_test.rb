@@ -82,6 +82,11 @@ class PlekTest < MiniTest::Unit::TestCase
     assert_equal Plek.new.find("foo"), Plek.find("foo")
   end
 
+  def test_should_be_able_to_avoid_instantiation_with_uris
+    ENV['GOVUK_APP_DOMAIN'] = 'foo.bar.baz'
+    assert_equal Plek.new.find_uri("foo"), Plek.find_uri("foo")
+  end
+
   def test_scheme_relative_urls
     url = Plek.new("dev.gov.uk").find("service", scheme_relative: true)
     assert_equal "//service.dev.gov.uk", url

@@ -12,7 +12,7 @@ class Plek
     self.parent_domain = domain_to_use || env_var_or_dev_fallback("GOVUK_APP_DOMAIN", DEV_DOMAIN)
   end
 
-  # Find the URI for a service/application.
+  # Find the URI for a service/application. Return the URI as a string.
   def find(service, options = {})
     name = name_for(service)
     if service_uri = defined_service_uri_for(name)
@@ -28,6 +28,11 @@ class Plek
     else
       "https://#{host}"
     end
+  end
+
+  # Find the URI for a service/application. Return a URI object.
+  def find_uri(*args)
+    URI(find(*args))
   end
 
   def asset_root
@@ -63,6 +68,10 @@ class Plek
 
     def find(*args)
       new.find(*args)
+    end
+
+    def find_uri(*args)
+      new.find_uri(*args)
     end
   end
 
