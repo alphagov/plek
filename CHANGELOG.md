@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 1.10.0
+
+  * Add `Plek.find_uri` for accessing `URI` objects for any service
+
 # 1.9.0
 
   * Add `Plek.find` to simplify client interface.
