@@ -1,9 +1,24 @@
 package plek
 
-import "net/url"
+import (
+	"errors"
+	"net/url"
+	"os"
+)
+
+var MissingGOVUKAppDomain = errors.New("Expected GOVUK_APP_DOMAIN to be set. Perhaps you should run your task through govuk_setenv <appname>?")
 
 var httpDomains = map[string]bool{
 	"dev.gov.uk": true,
+}
+
+func Find(hostname string) (*url.URL, error) {
+	appDomain := os.Getenv("GOVUK_APP_DOMAIN")
+	if appDomain == "" {
+		return nil, MissingGOVUKAppDomain
+	}
+
+	return Plek{parentDomain: appDomain}.Find(hostname), nil
 }
 
 type Plek struct {
