@@ -82,13 +82,12 @@ func parseEnvVarURL(envVar string) (*url.URL, error) {
 
 func serviceURLFromEnvOverride(serviceName string) (*url.URL, error) {
 	varName := "PLEK_SERVICE_" + strings.ToUpper(strings.Replace(serviceName, "-", "_", -1)) + "_URI"
-	urlStr := os.Getenv(varName)
-	if urlStr == "" {
-		return nil, nil
-	}
-	u, err := url.Parse(urlStr)
+	url, err := parseEnvVarURL(varName)
 	if err != nil {
-		return nil, &EnvVarURLInvalid{EnvVar: varName, Err: err}
+		if _, ok := err.(*EnvVarMissing); ok {
+			return nil, nil
+		}
+		return nil, err
 	}
-	return u, nil
+	return url, nil
 }
