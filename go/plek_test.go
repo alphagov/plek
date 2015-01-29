@@ -82,6 +82,11 @@ var packageFindExamples = []PackageFindExample{
 		ExpectedURL:    "http://foo.example.com",
 		Environ:        map[string]string{"PLEK_SERVICE_FOO_URI": "http://foo.example.com"},
 	},
+	{
+		ServiceName: "foo",
+		ExpectError: true,
+		Environ:     map[string]string{"PLEK_SERVICE_FOO_URI": "http://invalid%hostname.com"},
+	},
 }
 
 func TestPackageFind(t *testing.T) {
