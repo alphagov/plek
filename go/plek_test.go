@@ -165,3 +165,50 @@ func TestWebsiteRootInvalid(t *testing.T) {
 		t.Errorf("Expected error relating to GOVUK_WEBSITE_ROOT, got %s", errInvalid.EnvVar)
 	}
 }
+
+func TestAssetRoot(t *testing.T) {
+	os.Clearenv()
+	os.Setenv("GOVUK_ASSET_ROOT", "https://www.gov.uk")
+
+	actual, err := AssetRoot()
+	if err != nil {
+		t.Fatalf("Received unexpected error %v", err)
+	}
+	expected, _ := url.Parse("https://www.gov.uk")
+	if *actual != *expected {
+		t.Errorf("Expected %s, got %s", expected.String(), actual.String())
+	}
+}
+
+func TestAssetRootMissing(t *testing.T) {
+	os.Clearenv()
+
+	_, err := AssetRoot()
+	if err == nil {
+		t.Fatal("Expected error, received none")
+	}
+	errMissing, ok := err.(*EnvVarMissing)
+	if !ok {
+		t.Fatalf("Expected error to be a *EnvVarMissing, got %T", err)
+	}
+	if errMissing.EnvVar != "GOVUK_ASSET_ROOT" {
+		t.Errorf("Expected error relating to GOVUK_ASSET_ROOT, got %s", errMissing.EnvVar)
+	}
+}
+
+func TestAssetRootInvalid(t *testing.T) {
+	os.Clearenv()
+	os.Setenv("GOVUK_ASSET_ROOT", "https://invalid%hostname.com")
+
+	_, err := AssetRoot()
+	if err == nil {
+		t.Fatal("Expected error, received none")
+	}
+	errInvalid, ok := err.(*EnvVarURLInvalid)
+	if !ok {
+		t.Fatalf("Expected error to be a *EnvVarURLInvalid, got %T", err)
+	}
+	if errInvalid.EnvVar != "GOVUK_ASSET_ROOT" {
+		t.Errorf("Expected error relating to GOVUK_ASSET_ROOT, got %s", errInvalid.EnvVar)
+	}
+}

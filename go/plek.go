@@ -61,11 +61,19 @@ func (p Plek) Find(serviceName string) *url.URL {
 }
 
 func WebsiteRoot() (*url.URL, error) {
-	rootString := os.Getenv("GOVUK_WEBSITE_ROOT")
-	if rootString == "" {
-		return nil, &EnvVarMissing{EnvVar: "GOVUK_WEBSITE_ROOT"}
+	return parseEnvVarURL("GOVUK_WEBSITE_ROOT")
+}
+
+func AssetRoot() (*url.URL, error) {
+	return parseEnvVarURL("GOVUK_ASSET_ROOT")
+}
+
+func parseEnvVarURL(envVar string) (*url.URL, error) {
+	urlString := os.Getenv(envVar)
+	if urlString == "" {
+		return nil, &EnvVarMissing{EnvVar: envVar}
 	}
-	u, err := url.Parse(rootString)
+	u, err := url.Parse(urlString)
 	if err != nil {
 		return nil, &EnvVarURLInvalid{EnvVar: envVar, Err: err}
 	}
