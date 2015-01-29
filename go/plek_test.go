@@ -49,6 +49,7 @@ type PackageFindExample struct {
 	ServiceName    string
 	ExpectedURL    string
 	ExpectError    bool
+	Environ        map[string]string
 }
 
 var packageFindExamples = []PackageFindExample{
@@ -62,6 +63,25 @@ var packageFindExamples = []PackageFindExample{
 		ServiceName:    "anything",
 		ExpectError:    true,
 	},
+	// Overriding a specific service URL with an ENV var.
+	{
+		GovukAppDomain: "foo.com",
+		ServiceName:    "foo",
+		ExpectedURL:    "http://foo.example.com",
+		Environ:        map[string]string{"PLEK_SERVICE_FOO_URI": "http://foo.example.com"},
+	},
+	{
+		GovukAppDomain: "foo.com",
+		ServiceName:    "foo-bar",
+		ExpectedURL:    "http://anything.example.com",
+		Environ:        map[string]string{"PLEK_SERVICE_FOO_BAR_URI": "http://anything.example.com"},
+	},
+	{
+		GovukAppDomain: "", // Should not be required when using overrides
+		ServiceName:    "foo",
+		ExpectedURL:    "http://foo.example.com",
+		Environ:        map[string]string{"PLEK_SERVICE_FOO_URI": "http://foo.example.com"},
+	},
 }
 
 func TestPackageFind(t *testing.T) {
@@ -72,6 +92,9 @@ func TestPackageFind(t *testing.T) {
 
 func testPackageFind(t *testing.T, i int, ex PackageFindExample) {
 	os.Clearenv()
+	for k, v := range ex.Environ {
+		os.Setenv(k, v)
+	}
 	os.Setenv("GOVUK_APP_DOMAIN", ex.GovukAppDomain)
 
 	actual, err := Find(ex.ServiceName)
