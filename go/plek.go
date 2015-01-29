@@ -1,20 +1,25 @@
 package plek
 
 import (
-	"errors"
 	"net/url"
 	"os"
 	"strings"
 )
 
-var MissingGOVUKAppDomain = errors.New("Expected GOVUK_APP_DOMAIN to be set. Perhaps you should run your task through govuk_setenv <appname>?")
+type EnvVarMissing struct {
+	EnvVar string
+}
 
-type EnvURLError struct {
+func (e *EnvVarMissing) Error() string {
+	return "Expected " + e.EnvVar + " to be set. Perhaps you should run your task through govuk_setenv <appname>?"
+}
+
+type EnvVarURLInvalid struct {
 	EnvVar string
 	Err    error
 }
 
-func (e *EnvURLError) Error() string {
+func (e *EnvVarURLInvalid) Error() string {
 	return e.EnvVar + " " + e.Err.Error()
 }
 
@@ -33,7 +38,7 @@ func Find(hostname string) (*url.URL, error) {
 
 	appDomain := os.Getenv("GOVUK_APP_DOMAIN")
 	if appDomain == "" {
-		return nil, MissingGOVUKAppDomain
+		return nil, &EnvVarMissing{EnvVar: "GOVUK_APP_DOMAIN"}
 	}
 
 	return Plek{parentDomain: appDomain}.Find(hostname), nil
@@ -55,6 +60,18 @@ func (p Plek) Find(serviceName string) *url.URL {
 	return u
 }
 
+func WebsiteRoot() (*url.URL, error) {
+	rootString := os.Getenv("GOVUK_WEBSITE_ROOT")
+	if rootString == "" {
+		return nil, &EnvVarMissing{EnvVar: "GOVUK_WEBSITE_ROOT"}
+	}
+	u, err := url.Parse(rootString)
+	if err != nil {
+		return nil, &EnvVarURLInvalid{EnvVar: envVar, Err: err}
+	}
+	return u, nil
+}
+
 func serviceURLFromEnvOverride(serviceName string) (*url.URL, error) {
 	varName := "PLEK_SERVICE_" + strings.ToUpper(strings.Replace(serviceName, "-", "_", -1)) + "_URI"
 	urlStr := os.Getenv(varName)
@@ -63,7 +80,7 @@ func serviceURLFromEnvOverride(serviceName string) (*url.URL, error) {
 	}
 	u, err := url.Parse(urlStr)
 	if err != nil {
-		return nil, &EnvURLError{EnvVar: varName, Err: err}
+		return nil, &EnvVarURLInvalid{EnvVar: varName, Err: err}
 	}
 	return u, nil
 }
