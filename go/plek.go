@@ -1,6 +1,7 @@
 package plek
 
 import (
+	"fmt"
 	"net/url"
 	"os"
 	"strings"
@@ -107,7 +108,10 @@ func parseEnvVarURL(envVar string) (*url.URL, error) {
 }
 
 func serviceURLFromEnvOverride(serviceName string) (*url.URL, error) {
-	varName := "PLEK_SERVICE_" + strings.ToUpper(strings.Replace(serviceName, "-", "_", -1)) + "_URI"
+	varName := fmt.Sprintf(
+		"PLEK_SERVICE_%s_URI",
+		strings.ToUpper(strings.Replace(serviceName, "-", "_", -1)),
+	)
 	url, err := parseEnvVarURL(varName)
 	if err != nil {
 		if _, ok := err.(*EnvVarMissing); ok {
