@@ -7,26 +7,28 @@ import (
 )
 
 type FindExample struct {
-	ParentDomain string
-	ServiceName  string
-	ExpectedURL  string
+	GovukAppDomain string
+	ServiceName    string
+	ExpectedURL    string
+	ExpectError    bool
+	Environ        map[string]string
 }
 
 var findExamples = []FindExample{
 	{
-		ParentDomain: "example.com",
-		ServiceName:  "foo",
-		ExpectedURL:  "https://foo.example.com",
+		GovukAppDomain: "example.com",
+		ServiceName:    "foo",
+		ExpectedURL:    "https://foo.example.com",
 	},
 	{
-		ParentDomain: "example.com",
-		ServiceName:  "foo.bar",
-		ExpectedURL:  "https://foo.bar.example.com",
+		GovukAppDomain: "example.com",
+		ServiceName:    "foo.bar",
+		ExpectedURL:    "https://foo.bar.example.com",
 	},
 	{ // dev.gov.uk domains should magically return http
-		ParentDomain: "dev.gov.uk",
-		ServiceName:  "foo",
-		ExpectedURL:  "http://foo.dev.gov.uk",
+		GovukAppDomain: "dev.gov.uk",
+		ServiceName:    "foo",
+		ExpectedURL:    "http://foo.dev.gov.uk",
 	},
 }
 
@@ -37,22 +39,14 @@ func TestFind(t *testing.T) {
 }
 
 func testFind(t *testing.T, i int, ex FindExample) {
-	actual := New(ex.ParentDomain).Find(ex.ServiceName)
+	actual := New(ex.GovukAppDomain).Find(ex.ServiceName)
 	expected, _ := url.Parse(ex.ExpectedURL)
 	if *actual != *expected {
 		t.Errorf("Example %d: expected %s, got %s", i, expected.String(), actual.String())
 	}
 }
 
-type PackageFindExample struct {
-	GovukAppDomain string
-	ServiceName    string
-	ExpectedURL    string
-	ExpectError    bool
-	Environ        map[string]string
-}
-
-var packageFindExamples = []PackageFindExample{
+var packageFindExamples = []FindExample{
 	{
 		GovukAppDomain: "example.com",
 		ServiceName:    "foo",
@@ -95,7 +89,7 @@ func TestPackageFind(t *testing.T) {
 	}
 }
 
-func testPackageFind(t *testing.T, i int, ex PackageFindExample) {
+func testPackageFind(t *testing.T, i int, ex FindExample) {
 	os.Clearenv()
 	for k, v := range ex.Environ {
 		os.Setenv(k, v)
