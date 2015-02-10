@@ -12,8 +12,9 @@ Gem::Specification.new do |s|
   s.email       = ["craig@barkingiguana.com"]
   s.summary     = "Locations for services"
   s.description = "Find the right hostname for each service in an environment-dependent manner"
+  s.license     = 'MIT'
 
-  s.files        = Dir.glob("lib/**/*") + %w(README.md)
+  s.files        = Dir.glob("lib/**/*") + %w(LICENCE README.md)
   s.require_path = 'lib'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'gem_publisher', '~> 1.1.1'
