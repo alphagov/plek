@@ -1,27 +1,29 @@
-Plek
-====
+# Plek
 
-"Plek" is Afrikaans. It means "Location." Plek is used to generate the correct hostnames for internal GOV.UK services, eg:
+"Plek" is Afrikaans. It means "Location". Plek is used to generate the correct
+base URLs for internal GOV.UK services, eg:
 
 ```ruby
 Plek.find('frontend')
 ```
 
-returns `http://frontend.dev.gov.uk` on a development machine and `https://frontend.production.alphagov.co.uk` on a production machine. This means we can use this in our code and let our environment configuration figure out the correct hosts for us at runtime.
+returns `http://frontend.dev.gov.uk` on a development machine and
+`https://frontend.production.alphagov.co.uk` on a production machine. This
+means we can use this in our code and let our environment configuration figure
+out the correct hosts for us at runtime.
 
-Hacking Plek URLs
------------------
+## Technical documentation
 
-Plek allows one to alter the URI returned using environment variables, eg:
+See the [API docs](http://www.rubydoc.info/gems/plek) for full details of the API.
 
-```shell
-PLEK_SERVICE_EXAMPLE_CHEESE_THING_URI=http://example.com bundle exec rails s
-```
+### Running the test suite
 
-would set
+`bundle exec rake`
 
-```ruby
-Plek.find('example-cheese-thing')
-```
+## Licence
 
-to `http://example.com`. Underscores in environment variables are converted to dashes in Plek names as demonstrated.
+[MIT License](LICENCE)
+
+## Versioning policy
+
+This is versioned according to [Semantic Versioning 2.0](http://semver.org/)
