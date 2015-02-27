@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+const devDomain = "dev.gov.uk"
+
 // An EnvVarMissing is returned when a required environment variable is missing
 type EnvVarMissing struct {
 	// The environment variable this relates to
@@ -31,12 +33,12 @@ func (e *EnvVarURLInvalid) Error() string {
 }
 
 var httpDomains = map[string]bool{
-	"dev.gov.uk": true,
+	devDomain: true,
 }
 
 // Find returns the base URL for the given service name in the default parent
-// domain.  The default domain is taken from the GOVUK_APP_DOMAIN environment
-// variable.  If this is unset, an EnvVarMissing error will be returned.
+// domain. The domain is taken from the GOVUK_APP_DOMAIN environment variable.
+// If this is unset, "dev.gov.uk" is used.
 //
 // The URLs for an individual service can be overridden by setting a
 // corresponding PLEK_SERVICE_FOO_URI environment variable.  For example, to
@@ -54,7 +56,11 @@ func Find(hostname string) (*url.URL, error) {
 
 	appDomain := os.Getenv("GOVUK_APP_DOMAIN")
 	if appDomain == "" {
-		return nil, &EnvVarMissing{EnvVar: "GOVUK_APP_DOMAIN"}
+		if devDomainFromEnv := os.Getenv("DEV_DOMAIN"); devDomainFromEnv != "" {
+			appDomain = devDomainFromEnv
+		} else {
+			appDomain = devDomain
+		}
 	}
 
 	return Plek{parentDomain: appDomain}.Find(hostname), nil
