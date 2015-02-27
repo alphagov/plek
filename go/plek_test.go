@@ -54,8 +54,8 @@ var packageFindExamples = []FindExample{
 	},
 	{
 		GovukAppDomain: "",
-		ServiceName:    "anything",
-		ExpectError:    true,
+		ServiceName:    "foo",
+		ExpectedURL:    "http://foo.dev.gov.uk",
 	},
 	// Overriding a specific service URL with an ENV var.
 	{
