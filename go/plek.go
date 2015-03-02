@@ -44,8 +44,8 @@ var httpDomains = map[string]bool{
 // corresponding PLEK_SERVICE_FOO_URI environment variable.  For example, to
 // override the "foo-api" service url, set PLEK_SERVICE_FOO_API_URI to the base
 // URL of the service.
-func Find(hostname string) string {
-	overrideURL := serviceURLFromEnvOverride(hostname)
+func Find(serviceName string) string {
+	overrideURL := serviceURLFromEnvOverride(serviceName)
 	if overrideURL != "" {
 		return overrideURL
 	}
@@ -59,7 +59,7 @@ func Find(hostname string) string {
 		}
 	}
 
-	return Plek{parentDomain: appDomain}.Find(hostname)
+	return Plek{parentDomain: appDomain}.Find(serviceName)
 }
 
 // Plek builds service URLs for a given parent domain.
