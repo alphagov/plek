@@ -1,7 +1,6 @@
 package plek
 
 import (
-	"net/url"
 	"os"
 	"testing"
 )
@@ -10,7 +9,6 @@ type FindExample struct {
 	GovukAppDomain string
 	ServiceName    string
 	ExpectedURL    string
-	ExpectError    bool
 	Environ        map[string]string
 }
 
@@ -40,9 +38,9 @@ func TestFind(t *testing.T) {
 
 func testFind(t *testing.T, i int, ex FindExample) {
 	actual := New(ex.GovukAppDomain).Find(ex.ServiceName)
-	expected, _ := url.Parse(ex.ExpectedURL)
-	if *actual != *expected {
-		t.Errorf("Example %d: expected %s, got %s", i, expected.String(), actual.String())
+	expected := ex.ExpectedURL
+	if actual != expected {
+		t.Errorf("Example %d: expected %s, got %s", i, expected, actual)
 	}
 }
 
@@ -77,9 +75,10 @@ var packageFindExamples = []FindExample{
 		Environ:        map[string]string{"PLEK_SERVICE_FOO_URI": "http://foo.example.com"},
 	},
 	{
-		ServiceName: "foo",
-		ExpectError: true,
-		Environ:     map[string]string{"PLEK_SERVICE_FOO_URI": "http://invalid%hostname.com"},
+		GovukAppDomain: "foo.com",
+		ServiceName:    "foo",
+		ExpectedURL:    "http://invalid%hostname.com",
+		Environ:        map[string]string{"PLEK_SERVICE_FOO_URI": "http://invalid%hostname.com"},
 	},
 }
 
@@ -96,20 +95,9 @@ func testPackageFind(t *testing.T, i int, ex FindExample) {
 	}
 	os.Setenv("GOVUK_APP_DOMAIN", ex.GovukAppDomain)
 
-	actual, err := Find(ex.ServiceName)
-	if ex.ExpectError {
-		if err == nil {
-			t.Errorf("Example %d: Expected error, received none", i)
-		}
-		return
-	}
-	if err != nil {
-		t.Errorf("Example %d: received unexpected error %v", i, err)
-		return
-	}
-	expected, _ := url.Parse(ex.ExpectedURL)
-	if *actual != *expected {
-		t.Errorf("Example %d: expected %s, got %s", i, expected.String(), actual.String())
+	actual, expected := Find(ex.ServiceName), ex.ExpectedURL
+	if actual != expected {
+		t.Errorf("Example %d: expected %s, got %s", i, expected, actual)
 	}
 }
 
@@ -121,9 +109,9 @@ func TestWebsiteRoot(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Received unexpected error %v", err)
 	}
-	expected, _ := url.Parse("https://www.gov.uk")
-	if *actual != *expected {
-		t.Errorf("Expected %s, got %s", expected.String(), actual.String())
+	expected := "https://www.gov.uk"
+	if actual != expected {
+		t.Errorf("Expected %s, got %s", expected, actual)
 	}
 }
 
@@ -143,23 +131,6 @@ func TestWebsiteRootMissing(t *testing.T) {
 	}
 }
 
-func TestWebsiteRootInvalid(t *testing.T) {
-	os.Clearenv()
-	os.Setenv("GOVUK_WEBSITE_ROOT", "https://invalid%hostname.com")
-
-	_, err := WebsiteRoot()
-	if err == nil {
-		t.Fatal("Expected error, received none")
-	}
-	errInvalid, ok := err.(*EnvVarURLInvalid)
-	if !ok {
-		t.Fatalf("Expected error to be a *EnvVarURLInvalid, got %T", err)
-	}
-	if errInvalid.EnvVar != "GOVUK_WEBSITE_ROOT" {
-		t.Errorf("Expected error relating to GOVUK_WEBSITE_ROOT, got %s", errInvalid.EnvVar)
-	}
-}
-
 func TestAssetRoot(t *testing.T) {
 	os.Clearenv()
 	os.Setenv("GOVUK_ASSET_ROOT", "https://www.gov.uk")
@@ -168,9 +139,9 @@ func TestAssetRoot(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Received unexpected error %v", err)
 	}
-	expected, _ := url.Parse("https://www.gov.uk")
-	if *actual != *expected {
-		t.Errorf("Expected %s, got %s", expected.String(), actual.String())
+	expected := "https://www.gov.uk"
+	if actual != expected {
+		t.Errorf("Expected %s, got %s", expected, actual)
 	}
 }
 
@@ -187,22 +158,5 @@ func TestAssetRootMissing(t *testing.T) {
 	}
 	if errMissing.EnvVar != "GOVUK_ASSET_ROOT" {
 		t.Errorf("Expected error relating to GOVUK_ASSET_ROOT, got %s", errMissing.EnvVar)
-	}
-}
-
-func TestAssetRootInvalid(t *testing.T) {
-	os.Clearenv()
-	os.Setenv("GOVUK_ASSET_ROOT", "https://invalid%hostname.com")
-
-	_, err := AssetRoot()
-	if err == nil {
-		t.Fatal("Expected error, received none")
-	}
-	errInvalid, ok := err.(*EnvVarURLInvalid)
-	if !ok {
-		t.Fatalf("Expected error to be a *EnvVarURLInvalid, got %T", err)
-	}
-	if errInvalid.EnvVar != "GOVUK_ASSET_ROOT" {
-		t.Errorf("Expected error relating to GOVUK_ASSET_ROOT, got %s", errInvalid.EnvVar)
 	}
 }

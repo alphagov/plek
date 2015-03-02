@@ -43,15 +43,11 @@ var httpDomains = map[string]bool{
 // The URLs for an individual service can be overridden by setting a
 // corresponding PLEK_SERVICE_FOO_URI environment variable.  For example, to
 // override the "foo-api" service url, set PLEK_SERVICE_FOO_API_URI to the base
-// URL of the service.  If it can't be parsed by url.Parse, an EnvVarURLInvalid
-// error will be returned.
-func Find(hostname string) (*url.URL, error) {
-	overrideURL, err := serviceURLFromEnvOverride(hostname)
-	if err != nil {
-		return nil, err
-	}
-	if overrideURL != nil {
-		return overrideURL, nil
+// URL of the service.
+func Find(hostname string) string {
+	overrideURL := serviceURLFromEnvOverride(hostname)
+	if overrideURL != "" {
+		return overrideURL
 	}
 
 	appDomain := os.Getenv("GOVUK_APP_DOMAIN")
@@ -63,7 +59,7 @@ func Find(hostname string) (*url.URL, error) {
 		}
 	}
 
-	return Plek{parentDomain: appDomain}.Find(hostname), nil
+	return Plek{parentDomain: appDomain}.Find(hostname)
 }
 
 // Plek builds service URLs for a given parent domain.
@@ -77,53 +73,45 @@ func New(parentDomain string) Plek {
 }
 
 // Find returns the base URL for the given service name.
-func (p Plek) Find(serviceName string) *url.URL {
+func (p Plek) Find(serviceName string) string {
 	u := &url.URL{Scheme: "https", Host: serviceName + "." + p.parentDomain}
 	if httpDomains[p.parentDomain] {
 		u.Scheme = "http"
 	}
-	return u
+	return u.String()
 }
 
 // WebsiteRoot returns the public website base URL.  This is taken from the
 // GOVUK_WEBSITE_ROOT environment variable.  If this is unset, an EnvVarMissing
-// error will be returned.  If it can't be parsed by url.Parse, an
-// EnvVarURLInvalid error will be returned.
-func WebsiteRoot() (*url.URL, error) {
-	return parseEnvVarURL("GOVUK_WEBSITE_ROOT")
+// error will be returned.
+func WebsiteRoot() (string, error) {
+	return readEnvVarURL("GOVUK_WEBSITE_ROOT")
 }
 
 // AssetRoot returns the public assets base URL. This is taken from the
 // GOVUK_ASSET_ROOT environment variable.  If this is unset, an EnvVarMissing
-// error will be returned.  If it can't be parsed by url.Parse, an
-// EnvVarURLInvalid error will be returned.
-func AssetRoot() (*url.URL, error) {
-	return parseEnvVarURL("GOVUK_ASSET_ROOT")
+// error will be returned.
+func AssetRoot() (string, error) {
+	return readEnvVarURL("GOVUK_ASSET_ROOT")
 }
 
-func parseEnvVarURL(envVar string) (*url.URL, error) {
+func readEnvVarURL(envVar string) (string, error) {
 	urlString := os.Getenv(envVar)
 	if urlString == "" {
-		return nil, &EnvVarMissing{EnvVar: envVar}
+		return "", &EnvVarMissing{EnvVar: envVar}
 	}
-	u, err := url.Parse(urlString)
-	if err != nil {
-		return nil, &EnvVarURLInvalid{EnvVar: envVar, Err: err}
-	}
-	return u, nil
+	return urlString, nil
 }
 
-func serviceURLFromEnvOverride(serviceName string) (*url.URL, error) {
+func serviceURLFromEnvOverride(serviceName string) string {
 	varName := fmt.Sprintf(
 		"PLEK_SERVICE_%s_URI",
 		strings.ToUpper(strings.Replace(serviceName, "-", "_", -1)),
 	)
-	url, err := parseEnvVarURL(varName)
+	urlString, err := readEnvVarURL(varName)
 	if err != nil {
-		if _, ok := err.(*EnvVarMissing); ok {
-			return nil, nil
-		}
-		return nil, err
+		// it has to be EnvVarMissing
+		return ""
 	}
-	return url, nil
+	return urlString
 }
