@@ -44,6 +44,50 @@ func testFind(t *testing.T, i int, ex FindExample) {
 	}
 }
 
+type FindURLExample struct {
+	GovukAppDomain    string
+	ServiceName       string
+	ExpectedURLScheme string
+	ExpectedURLHost   string
+}
+
+var findURLExamples = []FindURLExample{
+	{
+		GovukAppDomain:    "example.com",
+		ServiceName:       "foo",
+		ExpectedURLScheme: "https",
+		ExpectedURLHost:   "foo.example.com",
+	},
+	{
+		GovukAppDomain:    "example.com",
+		ServiceName:       "foo.bar",
+		ExpectedURLScheme: "https",
+		ExpectedURLHost:   "foo.bar.example.com",
+	},
+	{ // dev.gov.uk domains should magically return http
+		GovukAppDomain:    "dev.gov.uk",
+		ServiceName:       "foo",
+		ExpectedURLScheme: "http",
+		ExpectedURLHost:   "foo.dev.gov.uk",
+	},
+}
+
+func TestFindURL(t *testing.T) {
+	for i, ex := range findURLExamples {
+		testFindURL(t, i, ex)
+	}
+}
+
+func testFindURL(t *testing.T, i int, ex FindURLExample) {
+	actual := New(ex.GovukAppDomain).FindURL(ex.ServiceName)
+	if actual.Host != ex.ExpectedURLHost {
+		t.Errorf("Example %d: expected URL with host %s, got %s", i, ex.ExpectedURLHost, actual.Host)
+	}
+	if actual.Scheme != ex.ExpectedURLScheme {
+		t.Errorf("Example %d: expected URL with scheme %s, got %s", i, ex.ExpectedURLScheme, actual.Scheme)
+	}
+}
+
 var packageFindExamples = []FindExample{
 	{
 		GovukAppDomain: "example.com",
