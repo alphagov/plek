@@ -37,29 +37,26 @@ var httpDomains = map[string]bool{
 }
 
 // Find returns the base URL for the given service name in the default parent
-// domain. The domain is taken from the GOVUK_APP_DOMAIN environment variable.
-// If this is unset, "dev.gov.uk" is used.
+// domain as a string. The app domain is taken from the GOVUK_APP_DOMAIN
+// environment variable. If this is unset, "dev.gov.uk" is used.
 //
-// The URLs for an individual service can be overridden by setting a
-// corresponding PLEK_SERVICE_FOO_URI environment variable.  For example, to
-// override the "foo-api" service url, set PLEK_SERVICE_FOO_API_URI to the base
-// URL of the service.
+// The URLs for an individual service can be overridden by setting a corresponding
+// PLEK_SERVICE_FOO_URI environment variable. For example, to override the "foo-api"
+// service url, set PLEK_SERVICE_FOO_API_URI to the base URL of the service.
 func Find(serviceName string) string {
 	overrideURL := serviceURLFromEnvOverride(serviceName)
 	if overrideURL != "" {
 		return overrideURL
 	}
 
-	appDomain := os.Getenv("GOVUK_APP_DOMAIN")
-	if appDomain == "" {
-		if devDomainFromEnv := os.Getenv("DEV_DOMAIN"); devDomainFromEnv != "" {
-			appDomain = devDomainFromEnv
-		} else {
-			appDomain = devDomain
-		}
-	}
+	return Plek{parentDomain: findAppDomain()}.Find(serviceName)
+}
 
-	return Plek{parentDomain: appDomain}.Find(serviceName)
+// FindURL returns the base URL for the given service name in the default parent
+// domain as a *url.URL. The app domain is taken from the GOVUK_APP_DOMAIN
+// environment variable. If this is unset, "dev.gov.uk" is used.
+func FindURL(serviceName string) *url.URL {
+	return Plek{parentDomain: findAppDomain()}.FindURL(serviceName)
 }
 
 // Plek builds service URLs for a given parent domain.
@@ -72,13 +69,18 @@ func New(parentDomain string) Plek {
 	return Plek{parentDomain: parentDomain}
 }
 
-// Find returns the base URL for the given service name.
-func (p Plek) Find(serviceName string) string {
+// FindURL returns the base URL for the given service name as a *url.URL
+func (p Plek) FindURL(serviceName string) *url.URL {
 	u := &url.URL{Scheme: "https", Host: serviceName + "." + p.parentDomain}
 	if httpDomains[p.parentDomain] {
 		u.Scheme = "http"
 	}
-	return u.String()
+	return u
+}
+
+// Find returns the base URL for the given service name as a string
+func (p Plek) Find(serviceName string) string {
+	return p.FindURL(serviceName).String()
 }
 
 // WebsiteRoot returns the public website base URL.  This is taken from the
@@ -114,4 +116,16 @@ func serviceURLFromEnvOverride(serviceName string) string {
 		return ""
 	}
 	return urlString
+}
+
+func findAppDomain() string {
+	appDomain := os.Getenv("GOVUK_APP_DOMAIN")
+	if appDomain == "" {
+		if devDomainFromEnv := os.Getenv("DEV_DOMAIN"); devDomainFromEnv != "" {
+			appDomain = devDomainFromEnv
+		} else {
+			appDomain = devDomain
+		}
+	}
+	return appDomain
 }
