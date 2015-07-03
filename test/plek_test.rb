@@ -30,6 +30,8 @@ class PlekTest < MiniTest::Unit::TestCase
     ENV['GOVUK_APP_DOMAIN'] = 'dev.gov.uk'
     url = Plek.new.find("non-whitehall-service")
     assert_equal "http", URI.parse(url).scheme
+  ensure
+    ENV.delete("GOVUK_APP_DOMAIN")
   end
 
   def test_should_return_http_when_requested
@@ -75,16 +77,22 @@ class PlekTest < MiniTest::Unit::TestCase
   def test_should_be_able_to_use_current_for_old_style_calls
     ENV['GOVUK_APP_DOMAIN'] = 'foo.bar.baz'
     assert_equal Plek.new.find("foo"), Plek.current.find("foo")
+  ensure
+    ENV.delete("GOVUK_APP_DOMAIN")
   end
 
   def test_should_be_able_to_avoid_instantiation_in_the_client
     ENV['GOVUK_APP_DOMAIN'] = 'foo.bar.baz'
     assert_equal Plek.new.find("foo"), Plek.find("foo")
+  ensure
+    ENV.delete("GOVUK_APP_DOMAIN")
   end
 
   def test_should_be_able_to_avoid_instantiation_with_uris
     ENV['GOVUK_APP_DOMAIN'] = 'foo.bar.baz'
     assert_equal Plek.new.find_uri("foo"), Plek.find_uri("foo")
+  ensure
+    ENV.delete("GOVUK_APP_DOMAIN")
   end
 
   def test_should_prepend_data_from_the_environment

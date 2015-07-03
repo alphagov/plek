@@ -2,7 +2,7 @@ require_relative "test_helper"
 
 describe Plek do
   describe "overriding the uri for a service" do
-    before do
+    after do
       ENV.delete("PLEK_SERVICE_FOO_URI")
       ENV.delete("PLEK_SERVICE_BAR_URI")
       ENV.delete("PLEK_SERVICE_FOO_BAR_API_URI")
