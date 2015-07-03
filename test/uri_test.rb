@@ -1,8 +1,10 @@
 require_relative "test_helper"
 
 describe Plek do
-  before do
+  after do
     ENV.delete("PLEK_SERVICE_CHEESE_URI")
+    ENV.delete("GOVUK_WEBSITE_ROOT")
+    ENV.delete("GOVUK_ASSET_ROOT")
   end
 
   it "should return a URI object for the webite root" do
