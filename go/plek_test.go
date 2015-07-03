@@ -99,6 +99,15 @@ var packageFindExamples = []FindExample{
 		ServiceName:    "foo",
 		ExpectedURL:    "http://foo.dev.gov.uk",
 	},
+	// Setting a hostname prefix
+	{
+		GovukAppDomain: "",
+		ServiceName:    "foo",
+		ExpectedURL:    "http://draft-foo.dev.gov.uk",
+		Environ: map[string]string{
+			"PLEK_HOSTNAME_PREFIX": "draft-",
+		},
+	},
 	// Overriding a specific service URL with an ENV var.
 	{
 		GovukAppDomain: "foo.com",
@@ -123,6 +132,16 @@ var packageFindExamples = []FindExample{
 		ServiceName:    "foo",
 		ExpectedURL:    "http://invalid%hostname.com",
 		Environ:        map[string]string{"PLEK_SERVICE_FOO_URI": "http://invalid%hostname.com"},
+	},
+	// PLEK_SERVICE_FOO_BAR_URI overrides the hostname prefix
+	{
+		GovukAppDomain: "foo.com",
+		ServiceName:    "foo-bar",
+		ExpectedURL:    "http://anything.example.com",
+		Environ: map[string]string{
+			"PLEK_SERVICE_FOO_BAR_URI": "http://anything.example.com",
+			"PLEK_HOSTNAME_PREFIX":     "draft-",
+		},
 	},
 }
 

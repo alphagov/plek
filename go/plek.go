@@ -40,6 +40,9 @@ var httpDomains = map[string]bool{
 // domain as a string. The app domain is taken from the GOVUK_APP_DOMAIN
 // environment variable. If this is unset, "dev.gov.uk" is used.
 //
+// If PLEK_HOSTNAME_PREFIX is present in the environment, it will be prepended
+// to the hostname.
+//
 // The URLs for an individual service can be overridden by setting a corresponding
 // PLEK_SERVICE_FOO_URI environment variable. For example, to override the "foo-api"
 // service url, set PLEK_SERVICE_FOO_API_URI to the base URL of the service.
@@ -72,6 +75,12 @@ func New(parentDomain string) Plek {
 // FindURL returns the base URL for the given service name as a *url.URL
 func (p Plek) FindURL(serviceName string) *url.URL {
 	u := &url.URL{Scheme: "https", Host: serviceName + "." + p.parentDomain}
+
+	hostnamePrefix := os.Getenv("PLEK_HOSTNAME_PREFIX")
+	if hostnamePrefix != "" {
+		u.Host = hostnamePrefix + u.Host
+	}
+
 	if httpDomains[p.parentDomain] {
 		u.Scheme = "http"
 	}

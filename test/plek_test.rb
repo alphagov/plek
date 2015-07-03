@@ -87,6 +87,13 @@ class PlekTest < MiniTest::Unit::TestCase
     assert_equal Plek.new.find_uri("foo"), Plek.find_uri("foo")
   end
 
+  def test_should_prepend_data_from_the_environment
+    ENV['PLEK_HOSTNAME_PREFIX'] = 'test-'
+    assert_equal "https://test-foo.preview.alphagov.co.uk", Plek.new("preview.alphagov.co.uk").find("foo")
+  ensure
+    ENV.delete("PLEK_HOSTNAME_PREFIX")
+  end
+
   def test_scheme_relative_urls
     url = Plek.new("dev.gov.uk").find("service", scheme_relative: true)
     assert_equal "//service.dev.gov.uk", url

@@ -40,6 +40,9 @@ class Plek
   # matches the {DEV_DOMAIN}, the returned URL will be a http URL, otherwise it
   # will be https.
   #
+  # If PLEK_HOSTNAME_PREFIX is present in the environment, it will be prepended
+  # to the hostname.
+  #
   # The URL for a given service can be overridden by setting a corresponding
   # environment variable.  eg if +PLEK_SERVICE_EXAMPLE_CHEESE_THING_URI+ was
   # set, +Plek.new.find('example-cheese-thing')+ would return the value of that
@@ -59,6 +62,10 @@ class Plek
     end
 
     host = "#{name}.#{parent_domain}"
+
+    if host_prefix = ENV['PLEK_HOSTNAME_PREFIX']
+      host = "#{host_prefix}#{host}"
+    end
 
     if options[:scheme_relative]
       "//#{host}"
