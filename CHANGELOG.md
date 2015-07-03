@@ -1,5 +1,10 @@
 # CHANGELOG
 
+# DEV
+
+  * Add `PLEK_HOSTNAME_PREFIX` environment variable, which prepends the contents
+    to the returned hostname
+
 # 1.10.0
 
   * Add `Plek.find_uri` for accessing `URI` objects for any service
