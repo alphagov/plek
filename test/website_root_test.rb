@@ -2,7 +2,7 @@ require_relative "test_helper"
 
 describe Plek do
   describe "retreiving the website_root" do
-    before do
+    after do
       ENV.delete("GOVUK_WEBSITE_ROOT")
       ENV.delete("RAILS_ENV")
       ENV.delete("RACK_ENV")
