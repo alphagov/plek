@@ -34,5 +34,9 @@ describe Plek do
       assert_equal "http://baz.dev.gov.uk", Plek.new().find("baz") # not defined
     end
 
+    it "ignores the force_http parameter" do
+      ENV["PLEK_SERVICE_FOO_URI"] = "https://foo.localhost:5001"
+      assert_equal "https://foo.localhost:5001", Plek.new().find("foo", :force_http => true)
+    end
   end
 end
