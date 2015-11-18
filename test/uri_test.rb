@@ -1,20 +1,16 @@
 require_relative "test_helper"
 
 describe Plek do
-  after do
-    ENV.delete("PLEK_SERVICE_CHEESE_URI")
-    ENV.delete("GOVUK_WEBSITE_ROOT")
-    ENV.delete("GOVUK_ASSET_ROOT")
-  end
-
   it "should return a URI object for the webite root" do
-    ENV["GOVUK_WEBSITE_ROOT"] = "https://www.test.gov.uk"
-    assert_equal URI.parse("https://www.test.gov.uk"), Plek.new.website_uri
+    ClimateControl.modify GOVUK_WEBSITE_ROOT: "https://www.test.gov.uk" do
+      assert_equal URI.parse("https://www.test.gov.uk"), Plek.new.website_uri
+    end
   end
 
   it "should return a URI object for the asset root" do
-    ENV["GOVUK_ASSET_ROOT"] = "https://assets.test.gov.uk"
-    assert_equal URI.parse("https://assets.test.gov.uk"), Plek.new.asset_uri
+    ClimateControl.modify GOVUK_ASSET_ROOT: "https://assets.test.gov.uk" do
+      assert_equal URI.parse("https://assets.test.gov.uk"), Plek.new.asset_uri
+    end
   end
 
   it "should return a URI object for a service" do
@@ -33,9 +29,10 @@ describe Plek do
   end
 
   it "should raise an error when given an invalid URI" do
-    ENV["PLEK_SERVICE_CHEESE_URI"] = "http://mouldy|cheese.test.gov.uk"
-    assert_raises URI::InvalidURIError do
-      Plek.new.find_uri("cheese")
+    ClimateControl.modify PLEK_SERVICE_CHEESE_URI: "http://mouldy|cheese.test.gov.uk" do
+      assert_raises URI::InvalidURIError do
+        Plek.new.find_uri("cheese")
+      end
     end
   end
 end
