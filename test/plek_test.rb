@@ -1,6 +1,6 @@
 require_relative "test_helper"
 
-class PlekTest < MiniTest::Unit::TestCase
+class PlekTest < Minitest::Test
   def test_should_return_whitehall_test_host_domain
     whitehall_url = Plek.new("test.gov.uk").find("whitehall")
     assert_equal "whitehall.test.gov.uk", URI.parse(whitehall_url).host
