@@ -107,4 +107,31 @@ class PlekTest < MiniTest::Unit::TestCase
     assert_equal "//service.dev.gov.uk", url
   end
 
+  def test_should_detect_dev_environment
+    assert_equal "development", Plek.new("dev.gov.uk").environment
+  end
+
+  def test_should_detect_preview_environment_as_integration
+    assert_equal "integration", Plek.new("preview.alphagov.co.uk").environment
+  end
+
+  def test_should_detect_integration_environment
+    assert_equal "integration", Plek.new("integration.publishing.service.gov.uk").environment
+  end
+
+  def test_should_detect_staging_environment
+    assert_equal "staging", Plek.new("staging.publishing.service.gov.uk").environment
+  end
+
+  def test_should_detect_production_environment
+    assert_equal "production", Plek.new("publishing.service.gov.uk").environment
+  end
+
+  def test_should_default_to_development_environment
+    assert_equal "development", Plek.new("foo.bar.baz").environment
+  end
+
+  def test_environment_convenience_function
+    assert_equal "development", Plek.environment
+  end
 end

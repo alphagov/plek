@@ -122,6 +122,22 @@ class Plek
     name
   end
 
+  # Find the GOV.UK environment for this domain
+  #
+  # @return [String] The environment's identifier
+  def environment
+    case parent_domain
+    when /(.*)\.publishing.service.gov.uk/
+      $1
+    when "publishing.service.gov.uk"
+      "production"
+    when "preview.alphagov.co.uk"
+      "integration"
+    else
+      "development"
+    end
+  end
+
   class << self
     # This alias allows calls to be made in the old style:
     #     Plek.current.find('foo')
@@ -139,6 +155,12 @@ class Plek
     # @see #find_uri
     def find_uri(*args)
       new.find_uri(*args)
+    end
+
+    # Convenience wrapper.  The same as calling +Plek.new.environment+.
+    # @see #environment
+    def environment
+      new.environment
     end
   end
 
