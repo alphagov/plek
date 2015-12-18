@@ -20,6 +20,16 @@ See the [API docs](http://www.rubydoc.info/gems/plek) for full details of the AP
 
 `bundle exec rake`
 
+### Environment variables
+
+The base URL Plek uses for each service can be set using environment variables.
+
+Plek will use any variables set matching this pattern:
+
+`PLEK_SERVICE_` + the service name, uppercased with any hyphens converted to underscores + `_URI`.
+
+For example, the variable for `static` would be `PLEK_SERVICE_STATIC_URI`.
+
 ## Licence
 
 [MIT License](LICENCE)
