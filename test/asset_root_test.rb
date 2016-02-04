@@ -1,7 +1,7 @@
 require_relative "test_helper"
 
 describe Plek do
-  describe "retreiving the asset_host" do
+  describe "retreiving the asset_root" do
     it "should return the GOVUK_ASSET_ROOT env variable" do
       ClimateControl.modify GOVUK_ASSET_ROOT: "http://static.dev.gov.uk" do
         assert_equal "http://static.dev.gov.uk", Plek.new("foo.gov.uk").asset_root
