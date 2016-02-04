@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 1.12.0
+
+  * Add `Plek.public_asset_host` for accessing `GOVUK_ASSET_HOST` environment variable
+
 # 1.11.0
 
   * Add `PLEK_HOSTNAME_PREFIX` environment variable, which prepends the contents
