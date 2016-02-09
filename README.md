@@ -8,7 +8,7 @@ Plek.find('frontend')
 ```
 
 returns `http://frontend.dev.gov.uk` on a development machine and
-`https://frontend.production.alphagov.co.uk` on a production machine. This
+`https://frontend.publishing.service.gov.uk` on a production machine. This
 means we can use this in our code and let our environment configuration figure
 out the correct hosts for us at runtime.
 
