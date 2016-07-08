@@ -1,4 +1,5 @@
 require 'plek/version'
+require 'plek/production_like'
 require 'uri'
 
 # Plek resolves service names to a corresponding base URL.
@@ -13,6 +14,8 @@ require 'uri'
 # environment variables being set to "development"), Plek provides some default
 # values when the necessary environment variables aren't set detailed below.
 class Plek
+  include Plek::ProductionLike
+
   # Raised when a required environment variable is not set.
   class NoConfigurationError < StandardError; end
 
