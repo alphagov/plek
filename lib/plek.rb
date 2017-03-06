@@ -68,11 +68,11 @@ class Plek
     end
 
     if options[:scheme_relative]
-      "//#{host}"
+      "//#{host}".freeze
     elsif options[:force_http] or HTTP_DOMAINS.include?(parent_domain)
-      "http://#{host}"
+      "http://#{host}".freeze
     else
-      "https://#{host}"
+      "https://#{host}".freeze
     end
   end
 

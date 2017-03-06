@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# Unreleased
+
+  * Consistently return a frozen string from the `Plek.find` method.
+
 # 1.12.0
 
   * Add `Plek.public_asset_host` for accessing `GOVUK_ASSET_HOST` environment variable
