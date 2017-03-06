@@ -1,6 +1,6 @@
 # CHANGELOG
 
-# Unreleased
+# 2.0.0
 
   * Consistently return a frozen string from the `Plek.find` method.
 
