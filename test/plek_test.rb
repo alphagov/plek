@@ -102,4 +102,15 @@ class PlekTest < Minitest::Test
     assert_equal "//service.dev.gov.uk", url
   end
 
+  def test_should_return_internal_when_env_var_set_and_internal_parameter_passed
+    ClimateControl.modify GOVUK_APP_DOMAIN_INTERNAL: 'internal.domain' do
+      assert_equal "http://foo.internal.domain", Plek.find("foo", internal: true)
+    end
+  end
+
+  def test_should_not_return_internal_when_env_var_not_set_but_internal_parameter_passed
+    ClimateControl.modify GOVUK_APP_DOMAIN_INTERNAL: nil do
+      assert_equal Plek.find("foo", internal: true), Plek.find("foo")
+    end
+  end
 end
