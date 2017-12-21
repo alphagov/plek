@@ -61,7 +61,13 @@ class Plek
       return service_uri
     end
 
-    host = "#{name}.#{parent_domain}"
+    if options[:internal]
+      domain_suffix = ENV['GOVUK_APP_DOMAIN_INTERNAL'] || parent_domain
+    else
+      domain_suffix = parent_domain
+    end
+
+    host = "#{name}.#{domain_suffix}"
 
     if host_prefix = ENV['PLEK_HOSTNAME_PREFIX']
       host = "#{host_prefix}#{host}"
