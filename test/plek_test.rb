@@ -102,4 +102,9 @@ class PlekTest < Minitest::Test
     assert_equal "//service.dev.gov.uk", url
   end
 
+  def test_should_return_external_domain
+    ClimateControl.modify GOVUK_APP_DOMAIN_EXTERNAL: 'baz.external' do
+      assert_equal 'http://foo.baz.external', Plek.new.external_url_for('foo')
+    end
+  end
 end

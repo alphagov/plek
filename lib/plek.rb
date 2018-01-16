@@ -78,6 +78,15 @@ class Plek
     end
   end
 
+  # Find the external URL for a service/application.
+  #
+  # @param service [String] the name of the service to lookup.  This should be
+  #   the hostname of the service.
+  # @param options [Hash] see the documentation for find.
+  def external_url_for(service, options = {})
+    find(service, options.merge(external: true))
+  end
+
   # Find the base URL for a service/application, and parse as a URI object.
   # This wraps #find and returns the parsed result.
   #
