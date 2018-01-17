@@ -22,7 +22,7 @@ class Plek
   # Domains to return http URLs for.
   HTTP_DOMAINS = [ DEV_DOMAIN ]
 
-  attr_accessor :parent_domain
+  attr_accessor :parent_domain, :external_domain
 
   # Construct a new Plek instance.
   #
@@ -31,8 +31,10 @@ class Plek
   #
   #   In development mode, this falls back to {DEV_DOMAIN} if the environment
   #   variable is unset.
-  def initialize(domain_to_use = nil)
+  def initialize(domain_to_use = nil, external_domain = nil)
     self.parent_domain = domain_to_use || env_var_or_dev_fallback("GOVUK_APP_DOMAIN", DEV_DOMAIN)
+    self.external_domain = external_domain ||
+                           env_var_or_dev_fallback("GOVUK_APP_DOMAIN_EXTERNAL", DEV_DOMAIN)
   end
 
   # Find the base URL for a service/application. This constructs the URL from
@@ -61,7 +63,7 @@ class Plek
       return service_uri
     end
 
-    host = "#{name}.#{parent_domain}"
+    host = "#{name}.#{options[:external] ? external_domain : parent_domain}"
 
     if host_prefix = ENV['PLEK_HOSTNAME_PREFIX']
       host = "#{host_prefix}#{host}"
@@ -74,6 +76,15 @@ class Plek
     else
       "https://#{host}".freeze
     end
+  end
+
+  # Find the external URL for a service/application.
+  #
+  # @param service [String] the name of the service to lookup.  This should be
+  #   the hostname of the service.
+  # @param options [Hash] see the documentation for find.
+  def external_url_for(service, options = {})
+    find(service, options.merge(external: true))
   end
 
   # Find the base URL for a service/application, and parse as a URI object.
