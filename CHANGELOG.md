@@ -1,5 +1,11 @@
 # CHANGELOG
 
+# 2.1.0
+
+  * Add support for external domains, and the
+    `GOVUK_APP_DOMAIN_EXTERNAL` environment variable.
+  * Add the `external_url_for` method for generating external URLs.
+
 # 2.0.0
 
   * Consistently return a frozen string from the `Plek.find` method.
