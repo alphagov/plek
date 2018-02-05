@@ -26,15 +26,19 @@ class Plek
 
   # Construct a new Plek instance.
   #
-  # @param domain_to_use [String] Optionally override the parent domain to use.
-  #   If unspecified, this uses the +GOVUK_APP_DOMAIN+ environment variable.
+  # @param domain_to_use [String, nil] Optionally override the parent domain
+  #   to use. If unspecified, this uses the +GOVUK_APP_DOMAIN+ environment
+  #   variable.
   #
   #   In development mode, this falls back to {DEV_DOMAIN} if the environment
   #   variable is unset.
+  # @param external_domain [String, nil] Optionally override the external
+  #   domain to use. If unspecified it will fall back to using
+  #   +GOVUK_APP_DOMAIN_EXTERNAL+ and if that is unavailable the parent domain
+  #   will be used
   def initialize(domain_to_use = nil, external_domain = nil)
     self.parent_domain = domain_to_use || env_var_or_dev_fallback("GOVUK_APP_DOMAIN", DEV_DOMAIN)
-    self.external_domain = external_domain ||
-                           env_var_or_dev_fallback("GOVUK_APP_DOMAIN_EXTERNAL", DEV_DOMAIN)
+    self.external_domain = external_domain || ENV["GOVUK_APP_DOMAIN_EXTERNAL"] || parent_domain
   end
 
   # Find the base URL for a service/application. This constructs the URL from

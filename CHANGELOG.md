@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# Unreleased
+
+  * Fallback to `GOVUK_APP_DOMAIN` when `GOVUK_APP_DOMAIN_EXTERNAL` is not set
+
 # 2.1.0
 
   * Add support for external domains, and the

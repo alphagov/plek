@@ -3,14 +3,28 @@
 "Plek" is Afrikaans. It means "Location". Plek is used to generate the correct
 base URLs for internal GOV.UK services, eg:
 
-```ruby
-Plek.find('frontend')
+```
+# on a dev machine
+> Plek.find('frontend')
+=> "http://frontend.dev.gov.uk"
+# on a production machine
+> Plek.find('frontend')
+=> "https://frontend.publishing.service.gov.uk"
 ```
 
-returns `http://frontend.dev.gov.uk` on a development machine and
-`https://frontend.publishing.service.gov.uk` on a production machine. This
-means we can use this in our code and let our environment configuration figure
-out the correct hosts for us at runtime.
+This means we can use this in our code and let our environment configuration
+figure out the correct hosts for us at runtime.
+
+In an environment where we have internal hostnames and external ones an option
+of `external` can be provided to determine whether an internal or external
+host is returned.
+
+```
+> Plek.find('frontend')
+=> "https://frontend.integration.govuk-internal.digital"
+> Plek.find('frontend', external: true)
+=> "https://frontend.integration.publishing.service.gov.uk"
+```
 
 ## Technical documentation
 
