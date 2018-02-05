@@ -33,8 +33,7 @@ class Plek
   #   variable is unset.
   def initialize(domain_to_use = nil, external_domain = nil)
     self.parent_domain = domain_to_use || env_var_or_dev_fallback("GOVUK_APP_DOMAIN", DEV_DOMAIN)
-    self.external_domain = external_domain ||
-                           env_var_or_dev_fallback("GOVUK_APP_DOMAIN_EXTERNAL", DEV_DOMAIN)
+    self.external_domain = external_domain || ENV["GOVUK_APP_DOMAIN_EXTERNAL"] || parent_domain
   end
 
   # Find the base URL for a service/application. This constructs the URL from
