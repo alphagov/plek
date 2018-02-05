@@ -1,6 +1,6 @@
 # CHANGELOG
 
-# Unreleased
+# 2.1.1
 
   * Fallback to `GOVUK_APP_DOMAIN` when `GOVUK_APP_DOMAIN_EXTERNAL` is not set
 
