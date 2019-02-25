@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.name        = "plek"
   s.version     = Plek::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Craig R Webster"]
-  s.email       = ["craig@barkingiguana.com"]
+  s.authors     = ["GOV.UK Dev"]
+  s.email       = ["govuk-dev@digital.cabinet-office.gov.uk"]
   s.summary     = "Locations for services"
   s.description = "Find the right hostname for each service in an environment-dependent manner"
   s.license     = 'MIT'
