@@ -7,7 +7,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     climate_control (0.2.0)
-    minitest (5.10.1)
+    minitest (5.11.3)
     rake (12.3.2)
 
 PLATFORMS
