@@ -17,7 +17,7 @@ class Plek
   class NoConfigurationError < StandardError; end
 
   # The fallback parent domain to use in development mode.
-  DEV_DOMAIN = ENV['DEV_DOMAIN'] || 'dev.gov.uk'
+  DEV_DOMAIN = 'dev.gov.uk'
 
   # Domains to return http URLs for.
   HTTP_DOMAINS = [ DEV_DOMAIN ]
