@@ -48,7 +48,7 @@ For example, the variable for `static` would be `PLEK_SERVICE_STATIC_URI`.
 
 #### Others
 
-To override the development environment base domain, set `DEV_DOMAIN`. The default is `dev.gov.uk`. The environment can be set using either `RAILS_ENV` or `RACK_ENV`.
+To domain is based on the environment, and defaults to 'dev.gov.uk'. The environment can be set using either `RAILS_ENV` or `RACK_ENV`.
 
 You can prepend strings to the hostnames generated using: `PLEK_HOSTNAME_PREFIX`.
 

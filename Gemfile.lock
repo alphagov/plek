@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    plek (2.1.1)
+    plek (3.0.0)
 
 GEM
   remote: http://rubygems.org/
