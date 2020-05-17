@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.files        = Dir.glob("lib/**/*") + %w(LICENCE README.md)
   s.require_path = 'lib'
   s.add_development_dependency 'rake'
+  s.add_development_dependency 'rubocop-govuk'
   s.add_development_dependency 'minitest'
   s.add_development_dependency 'climate_control'
 end

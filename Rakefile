@@ -1,7 +1,12 @@
 require "bundler/gem_tasks"
 require "rake/testtask"
 
-task "default" => "test"
+desc "Run RuboCop"
+task :lint, :environment do
+  sh "bundle exec rubocop --format clang"
+end
+
+task default: %i[lint test]
 
 Rake::TestTask.new do |t|
   t.libs << 'test'
