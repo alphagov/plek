@@ -63,13 +63,13 @@ class Plek
   # @return [String] The base URL for the service.
   def find(service, options = {})
     name = name_for(service)
-    if service_uri = defined_service_uri_for(name)
+    if (service_uri = defined_service_uri_for(name))
       return service_uri
     end
 
     host = "#{name}.#{options[:external] ? external_domain : parent_domain}"
 
-    if host_prefix = ENV["PLEK_HOSTNAME_PREFIX"]
+    if (host_prefix = ENV["PLEK_HOSTNAME_PREFIX"])
       host = "#{host_prefix}#{host}"
     end
 
@@ -167,7 +167,7 @@ class Plek
 private
 
   def env_var_or_dev_fallback(var_name, fallback_str = nil)
-    if var = ENV[var_name]
+    if (var = ENV[var_name])
       var
     elsif ENV["RAILS_ENV"] == "production" || ENV["RACK_ENV"] == "production"
       raise(NoConfigurationError, "Expected #{var_name} to be set. Perhaps you should run your task through govuk_setenv <appname>?")
