@@ -1,5 +1,5 @@
-require 'plek/version'
-require 'uri'
+require "plek/version"
+require "uri"
 
 # Plek resolves service names to a corresponding base URL.
 #
@@ -17,10 +17,10 @@ class Plek
   class NoConfigurationError < StandardError; end
 
   # The fallback parent domain to use in development mode.
-  DEV_DOMAIN = 'dev.gov.uk'
+  DEV_DOMAIN = "dev.gov.uk".freeze
 
   # Domains to return http URLs for.
-  HTTP_DOMAINS = [ DEV_DOMAIN ]
+  HTTP_DOMAINS = [DEV_DOMAIN].freeze
 
   attr_accessor :parent_domain, :external_domain
 
@@ -69,13 +69,13 @@ class Plek
 
     host = "#{name}.#{options[:external] ? external_domain : parent_domain}"
 
-    if host_prefix = ENV['PLEK_HOSTNAME_PREFIX']
+    if host_prefix = ENV["PLEK_HOSTNAME_PREFIX"]
       host = "#{host_prefix}#{host}"
     end
 
     if options[:scheme_relative]
       "//#{host}".freeze
-    elsif options[:force_http] or HTTP_DOMAINS.include?(parent_domain)
+    elsif options[:force_http] || HTTP_DOMAINS.include?(parent_domain)
       "http://#{host}".freeze
     else
       "https://#{host}".freeze
@@ -140,7 +140,7 @@ class Plek
     name = service.to_s.dup
     name.downcase!
     name.strip!
-    name.gsub!(/[^a-z\.-]+/, '')
+    name.gsub!(/[^a-z\.-]+/, "")
     name
   end
 
@@ -164,7 +164,7 @@ class Plek
     end
   end
 
-  private
+private
 
   def env_var_or_dev_fallback(var_name, fallback_str = nil)
     if var = ENV[var_name]
@@ -179,12 +179,13 @@ class Plek
   end
 
   def defined_service_uri_for(service)
-    service_name = service.upcase.gsub(/-/,'_')
+    service_name = service.upcase.gsub(/-/, "_")
     var_name = "PLEK_SERVICE_#{service_name}_URI"
 
-    if (uri = ENV[var_name] and ! uri.empty?)
+    if (uri = ENV[var_name]) && !uri.empty?
       return uri
     end
-    return nil
+
+    nil
   end
 end
