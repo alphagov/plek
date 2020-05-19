@@ -4,19 +4,19 @@ describe Plek do
   describe "overriding the uri for a service" do
     it "looks for an env variable matching the service name and returns its value when present" do
       ClimateControl.modify PLEK_SERVICE_FOO_URI: "http://foo.localhost:5001" do
-        assert_equal "http://foo.localhost:5001", Plek.new().find("foo")
+        assert_equal "http://foo.localhost:5001", Plek.new.find("foo")
       end
     end
 
     it "upcases and underscores the service name in the environment variable" do
       ClimateControl.modify PLEK_SERVICE_FOO_API_URI: "http://foo.localhost:5001" do
-        assert_equal "http://foo.localhost:5001", Plek.new().find("foo-api")
+        assert_equal "http://foo.localhost:5001", Plek.new.find("foo-api")
       end
     end
 
     it "upcases and underscores all hyphens in the service name in the environment variable" do
       ClimateControl.modify PLEK_SERVICE_FOO_BAR_API_URI: "http://foo.localhost:5001" do
-        assert_equal "http://foo.localhost:5001", Plek.new().find("foo-bar-api")
+        assert_equal "http://foo.localhost:5001", Plek.new.find("foo-bar-api")
       end
     end
 
@@ -28,15 +28,15 @@ describe Plek do
       }
 
       ClimateControl.modify new_env do
-        assert_equal "http://foo.dev.gov.uk", Plek.new().find("foo")
-        assert_equal "http://bar.dev.gov.uk", Plek.new().find("bar")
-        assert_equal "http://baz.dev.gov.uk", Plek.new().find("baz") # not defined
+        assert_equal "http://foo.dev.gov.uk", Plek.new.find("foo")
+        assert_equal "http://bar.dev.gov.uk", Plek.new.find("bar")
+        assert_equal "http://baz.dev.gov.uk", Plek.new.find("baz") # not defined
       end
     end
 
     it "ignores the force_http parameter" do
       ClimateControl.modify PLEK_SERVICE_FOO_URI: "https://foo.localhost:5001" do
-        assert_equal "https://foo.localhost:5001", Plek.new().find("foo", :force_http => true)
+        assert_equal "https://foo.localhost:5001", Plek.new.find("foo", force_http: true)
       end
     end
   end
