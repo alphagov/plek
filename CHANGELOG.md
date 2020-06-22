@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 4.0.0
+
+  * Remove #public_asset_host method since it is no longer used by any GOV.UK apps.
+
 # 3.0.0
 
   * Remove support for 'DEV_DOMAIN' environment variable
