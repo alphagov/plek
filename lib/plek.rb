@@ -107,13 +107,6 @@ class Plek
     env_var_or_dev_fallback("GOVUK_ASSET_ROOT") { find("static") }
   end
 
-  # Find the asset host used to serve assets to the public
-  #
-  # @return [String] The public-facing asset base URL
-  def public_asset_host
-    env_var_or_dev_fallback("GOVUK_ASSET_HOST") { find("static") }
-  end
-
   # Find the base URL for the public website frontend.
   #
   # @return [String] The website base URL.
