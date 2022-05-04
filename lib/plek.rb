@@ -133,7 +133,7 @@ class Plek
     name = service.to_s.dup
     name.downcase!
     name.strip!
-    name.gsub!(/[^a-z\.-]+/, "")
+    name.gsub!(/[^a-z.-]+/, "")
     name
   end
 

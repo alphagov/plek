@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.description = "Find the right hostname for each service in an environment-dependent manner"
   s.license     = "MIT"
 
-  s.files        = Dir.glob("lib/**/*") + %w[LICENCE README.md]
+  s.files = Dir.glob("lib/**/*") + %w[LICENCE README.md]
   s.required_ruby_version = ">= 2.7"
   s.require_path = "lib"
   s.add_development_dependency "climate_control"
