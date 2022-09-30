@@ -1,5 +1,23 @@
 # CHANGELOG
 
+# Unreleased
+
+  * Allow setting `GOVUK_APP_DOMAIN=""` (empty string). Similarly for
+    `GOVUK_APP_DOMAIN_EXTERNAL`. This allows single-label domains to be used in
+    service URLs instead of FQDNs, which eliminates a lot of configuration
+    complexity when running on Kubernetes. This also paves the way for
+    eventually retiring Plek, if we want.
+  * Take an optional, comma-separated list of hostnames
+    `PLEK_UNPREFIXABLE_HOSTS` not to be prefixed even when
+    `PLEK_HOSTNAME_PREFIX` is set. This simplifies the configuration of the
+    draft stack in Kubernetes.
+  * Support using `http` as the URL scheme for single-label domains when
+    `PLEK_USE_HTTP_FOR_SINGLE_LABEL_DOMAINS=1`. (A single-label domain looks
+    like `content-store`, as opposed to `content-store.test.govuk.digital`.)
+    This is is needed in order to run in Kubernetes without a service mesh,
+    without hard-to-maintain configuration logic to generate domains names
+    depending on the environment.
+
 # 4.0.0
 
   * Remove #public_asset_host method since it is no longer used by any GOV.UK apps.

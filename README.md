@@ -52,9 +52,19 @@ To domain is based on the environment, and defaults to 'dev.gov.uk'. The environ
 
 You can prepend strings to the hostnames generated using: `PLEK_HOSTNAME_PREFIX`.
 
+If `PLEK_HOSTNAME_PREFIX` is present, it will be prepended to the hostname
+unless the hostname appears in the comma-separated list
+`PLEK_UNPREFIXABLE_HOSTS`.
+
 Override the asset URL with: `GOVUK_ASSET_ROOT`. The default is to generate a URL for the `static` service.
 
 Override the website root with `GOVUK_WEBSITE_ROOT`. The default is to generate a URL for the `www` service.
+
+If `PLEK_USE_HTTP_FOR_SINGLE_LABEL_DOMAINS=1` (or anything beginning with `t`
+or `y`), Plek will use `http` as the URL scheme instead of `https` for
+single-label domains. Single-label domains are domains with just a single name
+component, for example `frontend` or `content-store`, as opposed to
+`frontend.example.com` or `content-store.test.govuk.digital`.
 
 ## Licence
 

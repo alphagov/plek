@@ -97,6 +97,38 @@ class PlekTest < Minitest::Test
     end
   end
 
+  def test_unprefixable_hosts_are_not_prefixed
+    ClimateControl.modify PLEK_HOSTNAME_PREFIX: "draft-",
+                          PLEK_UNPREFIXABLE_HOSTS: "signon,feedback" do
+      p = Plek.new("test.govuk.digital")
+      assert_equal "https://draft-content-store.test.govuk.digital", p.find("content-store")
+      assert_equal "https://signon.test.govuk.digital", p.find("signon")
+      assert_equal "https://feedback.test.govuk.digital", p.find("feedback")
+    end
+  end
+
+  def test_use_http_for_single_label_domains
+    ClimateControl.modify PLEK_USE_HTTP_FOR_SINGLE_LABEL_DOMAINS: "1",
+                          GOVUK_APP_DOMAIN: "" do
+      p = Plek.new
+      assert_equal "http://frontend", p.find("frontend")
+    end
+  end
+
+  def test_http_for_single_label_domains_doesnt_affect_others
+    ClimateControl.modify PLEK_USE_HTTP_FOR_SINGLE_LABEL_DOMAINS: "1",
+                          GOVUK_APP_DOMAIN: "",
+                          GOVUK_APP_DOMAIN_EXTERNAL: "example.com" do
+      p = Plek.new
+      assert_equal "https://foo.example.com", p.external_url_for("foo")
+    end
+  end
+
+  def test_dev_domain_is_http_if_no_http_domains_specified
+    p = Plek.new
+    assert_equal "http://signon.dev.gov.uk", p.find("signon")
+  end
+
   def test_scheme_relative_urls
     url = Plek.new("dev.gov.uk").find("service", scheme_relative: true)
     assert_equal "//service.dev.gov.uk", url
@@ -104,7 +136,19 @@ class PlekTest < Minitest::Test
 
   def test_should_return_external_domain
     ClimateControl.modify GOVUK_APP_DOMAIN_EXTERNAL: "baz.external" do
-      assert_equal "http://foo.baz.external", Plek.new.external_url_for("foo")
+      assert_equal "https://foo.baz.external", Plek.new.external_url_for("foo")
+    end
+  end
+
+  def test_accepts_empty_domain_suffix
+    p = Plek.new("")
+    assert_equal "https://content-store", p.find("content-store")
+  end
+
+  def test_accepts_empty_domain_suffix_via_environment
+    ClimateControl.modify GOVUK_APP_DOMAIN: "",
+                          GOVUK_APP_DOMAIN_EXTERNAL: "example.com" do
+      assert_equal "https://content-store", Plek.new.find("content-store")
     end
   end
 end

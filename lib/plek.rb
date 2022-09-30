@@ -19,10 +19,7 @@ class Plek
   # The fallback parent domain to use in development mode.
   DEV_DOMAIN = "dev.gov.uk".freeze
 
-  # Domains to return http URLs for.
-  HTTP_DOMAINS = [DEV_DOMAIN].freeze
-
-  attr_accessor :parent_domain, :external_domain
+  attr_reader :parent_domain, :external_domain
 
   # Construct a new Plek instance.
   #
@@ -37,8 +34,12 @@ class Plek
   #   +GOVUK_APP_DOMAIN_EXTERNAL+ and if that is unavailable the parent domain
   #   will be used
   def initialize(domain_to_use = nil, external_domain = nil)
-    self.parent_domain = domain_to_use || env_var_or_dev_fallback("GOVUK_APP_DOMAIN", DEV_DOMAIN)
-    self.external_domain = external_domain || ENV["GOVUK_APP_DOMAIN_EXTERNAL"] || parent_domain
+    truth_re = /^[1ty]/i
+    @parent_domain = domain_to_use || env_var_or_dev_fallback("GOVUK_APP_DOMAIN", DEV_DOMAIN)
+    @external_domain = external_domain || ENV.fetch("GOVUK_APP_DOMAIN_EXTERNAL", @parent_domain)
+    @host_prefix = ENV.fetch("PLEK_HOSTNAME_PREFIX", "")
+    @unprefixable_hosts = ENV.fetch("PLEK_UNPREFIXABLE_HOSTS", "").split(",").map(&:strip)
+    @use_http_for_single_label_domains = truth_re.match?(ENV.fetch("PLEK_USE_HTTP_FOR_SINGLE_LABEL_DOMAINS", ""))
   end
 
   # Find the base URL for a service/application. This constructs the URL from
@@ -47,12 +48,20 @@ class Plek
   # will be https.
   #
   # If PLEK_HOSTNAME_PREFIX is present in the environment, it will be prepended
-  # to the hostname.
+  # to the hostname unless the hostname appears in the comma-separated list
+  # PLEK_UNPREFIXABLE_HOSTS.
+  #
+  # If PLEK_USE_HTTP_FOR_SINGLE_LABEL_DOMAINS=1 in the environment, Plek will use
+  # "http" as the URL scheme instead of "https" for single-label domains.
+  # Single-label domains are domains with just a single name component, for
+  # example "frontend" or "content-store", as opposed to
+  # "frontend.example.com" or "content-store.test.govuk.digital".
   #
   # The URL for a given service can be overridden by setting a corresponding
   # environment variable.  eg if +PLEK_SERVICE_EXAMPLE_CHEESE_THING_URI+ was
   # set, +Plek.new.find('example-cheese-thing')+ would return the value of that
-  # variable.
+  # variable. This overrides both the "internal" and "external" URL for the
+  # service. It is not possible to override them separately.
   #
   # @param service [String] the name of the service to lookup.  This should be
   #   the hostname of the service.
@@ -62,24 +71,25 @@ class Plek
   #   scheme (eg `//foo.example.com`)
   # @return [String] The base URL for the service.
   def find(service, options = {})
-    name = name_for(service)
+    name = clean_name(service)
     if (service_uri = defined_service_uri_for(name))
       return service_uri
     end
 
-    host = "#{name}.#{options[:external] ? external_domain : parent_domain}"
+    name = "#{host_prefix}#{name}" unless unprefixable_hosts.include?(name)
 
-    if (host_prefix = ENV["PLEK_HOSTNAME_PREFIX"])
-      host = "#{host_prefix}#{host}"
-    end
+    domain = options[:external] ? external_domain : parent_domain
+    domain_suffix = domain.empty? ? "" : ".#{domain}"
 
-    if options[:scheme_relative]
-      "//#{host}".freeze
-    elsif options[:force_http] || HTTP_DOMAINS.include?(parent_domain)
-      "http://#{host}".freeze
-    else
-      "https://#{host}".freeze
-    end
+    scheme = if options[:scheme_relative]
+               ""
+             elsif options[:force_http] || http_domain?(domain)
+               "http:"
+             else
+               "https:"
+             end
+
+    "#{scheme}//#{name}#{domain_suffix}".freeze
   end
 
   # Find the external URL for a service/application.
@@ -128,15 +138,7 @@ class Plek
     URI(website_root)
   end
 
-  # @api private
-  def name_for(service)
-    name = service.to_s.dup
-    name.downcase!
-    name.strip!
-    name.gsub!(/[^a-z.-]+/, "")
-    name
-  end
-
+  # TODO: clean up all references to these and then remove them.
   class << self
     # This alias allows calls to be made in the old style:
     #     Plek.current.find('foo')
@@ -159,6 +161,17 @@ class Plek
 
 private
 
+  attr_reader :host_prefix, :unprefixable_hosts, :use_http_for_single_label_domains
+
+  # TODO: clean up call sites throughout alphagov and then delete clean_name.
+  def clean_name(service)
+    service.to_s.downcase.strip.gsub(/[^a-z.-]+/, "")
+  end
+
+  def http_domain?(domain)
+    domain == DEV_DOMAIN || domain == "" && use_http_for_single_label_domains
+  end
+
   def env_var_or_dev_fallback(var_name, fallback_str = nil)
     if (var = ENV[var_name])
       var
@@ -172,13 +185,8 @@ private
   end
 
   def defined_service_uri_for(service)
-    service_name = service.upcase.gsub(/-/, "_")
-    var_name = "PLEK_SERVICE_#{service_name}_URI"
-
-    if (uri = ENV[var_name]) && !uri.empty?
-      return uri
-    end
-
-    nil
+    service_name = service.upcase.tr("-", "_")
+    uri = ENV.fetch("PLEK_SERVICE_#{service_name}_URI", "")
+    uri.empty? ? nil : uri
   end
 end
