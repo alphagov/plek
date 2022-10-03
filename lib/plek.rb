@@ -101,15 +101,6 @@ class Plek
     find(service, options.merge(external: true))
   end
 
-  # Find the base URL for a service/application, and parse as a URI object.
-  # This wraps #find and returns the parsed result.
-  #
-  # @param args see {#find}
-  # @return [URI::HTTPS,URI::HTTP,URI::Generic] The base URL for the service
-  def find_uri(*args)
-    URI(find(*args))
-  end
-
   # Find the base URL for assets.
   #
   # @return [String] The assets base URL.
@@ -124,31 +115,11 @@ class Plek
     env_var_or_dev_fallback("GOVUK_WEBSITE_ROOT") { find("www") }
   end
 
-  # Find the base URL for assets.
-  #
-  # @return [URI::HTTPS,URI::HTTP,URI::Generic] The assets base URL.
-  def asset_uri
-    URI(asset_root)
-  end
-
-  # Find the base URL for the public website frontend.
-  #
-  # @return [URI::HTTPS,URI::HTTP,URI::Generic] The website base URL.
-  def website_uri
-    URI(website_root)
-  end
-
   class << self
     # Convenience wrapper.  The same as calling +Plek.new.find+.
     # @see #find
     def find(*args)
       new.find(*args)
-    end
-
-    # Convenience wrapper.  The same as calling +Plek.new.find_uri+.
-    # @see #find_uri
-    def find_uri(*args)
-      new.find_uri(*args)
     end
   end
 
