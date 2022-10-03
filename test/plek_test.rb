@@ -73,16 +73,6 @@ class PlekTest < Minitest::Test
     assert_equal "https://explore-reviewomatic.production.alphagov.co.uk", url
   end
 
-  def test_should_be_able_to_use_current_for_old_style_calls
-    ClimateControl.modify GOVUK_APP_DOMAIN: "foo.bar.baz" do
-      old_style = nil
-      assert_output("", "Plek.current is deprecated and will be removed. Use Plek.new or Plek.find instead.\n") do
-        old_style = Plek.current.find("foo")
-      end
-      assert_equal Plek.new.find("foo"), old_style
-    end
-  end
-
   def test_should_be_able_to_avoid_instantiation_in_the_client
     ClimateControl.modify GOVUK_APP_DOMAIN: "foo.bar.baz" do
       assert_equal Plek.new.find("foo"), Plek.find("foo")

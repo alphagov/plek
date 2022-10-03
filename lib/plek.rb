@@ -138,17 +138,7 @@ class Plek
     URI(website_root)
   end
 
-  # TODO: clean up all references to these and then remove them.
   class << self
-    # This alias allows calls to be made in the old style:
-    #     Plek.current.find('foo')
-    # as well as the new style:
-    #     Plek.new.find('foo')
-    def current(...)
-      warn "Plek.current is deprecated and will be removed. Use Plek.new or Plek.find instead."
-      new(...)
-    end
-
     # Convenience wrapper.  The same as calling +Plek.new.find+.
     # @see #find
     def find(*args)

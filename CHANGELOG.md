@@ -2,7 +2,8 @@
 
 # Unreleased
 
-Nothing yet.
+  * BREAKING: Remove `Plek.current` method, this was deprecated 10 years ago
+    and apps should be using `Plek.new` or shorthand alternatives (`Plek.find`)
 
 # 4.1.0
 
