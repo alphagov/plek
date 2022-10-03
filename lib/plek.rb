@@ -144,7 +144,10 @@ class Plek
     #     Plek.current.find('foo')
     # as well as the new style:
     #     Plek.new.find('foo')
-    alias_method :current, :new
+    def current(...)
+      warn "Plek.current is deprecated and will be removed. Use Plek.new or Plek.find instead."
+      new(...)
+    end
 
     # Convenience wrapper.  The same as calling +Plek.new.find+.
     # @see #find

@@ -2,6 +2,8 @@
 
 # Unreleased
 
+  * Deprecate usage of `Plek.current` this method will be removed in next
+    major version. This adds a warning for users.
   * Allow setting `GOVUK_APP_DOMAIN=""` (empty string). Similarly for
     `GOVUK_APP_DOMAIN_EXTERNAL`. This allows single-label domains to be used in
     service URLs instead of FQDNs, which eliminates a lot of configuration
