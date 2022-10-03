@@ -72,7 +72,7 @@ class Plek
   #   scheme (eg `//foo.example.com`)
   # @return [String] The base URL for the service.
   def find(service, options = {})
-    name = clean_name(service)
+    name = valid_service_name(service)
     if (service_uri = defined_service_uri_for(name))
       return service_uri
     end
@@ -142,9 +142,11 @@ private
 
   attr_reader :host_prefix, :unprefixable_hosts, :use_http_for_single_label_domains
 
-  # TODO: clean up call sites throughout alphagov and then delete clean_name.
-  def clean_name(service)
-    service.to_s.downcase.strip.gsub(/[^a-z.-]+/, "")
+  def valid_service_name(name)
+    service_name = name.to_s
+    return service_name if service_name.match?(/\A[a-z1-9.-]+\z/)
+
+    raise ArgumentError, "Plek expects a service name to only contain lowercase a-z, numbers . (period) and - (dash) characters."
   end
 
   def http_domain?(domain)

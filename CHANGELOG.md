@@ -2,6 +2,8 @@
 
 # Unreleased
 
+  * BREAKING: Plek will no longer try to fix malformed service names and will
+    instead raise an ArgumentError.
   * Add convenience methods for `Plek.external_url_for`, `Plek.asset_root`
     and `Plek.website_root` for consistency in methods.
   * BREAKING: Remove `Plek.find_uri`, `Plek#find_uri`, `Plek#asset_uri` and

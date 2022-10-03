@@ -145,4 +145,16 @@ class PlekTest < Minitest::Test
       assert_equal "https://content-store", Plek.new.find("content-store")
     end
   end
+
+  def test_accepts_valid_service_names
+    assert_equal "http://allows-dash-separators.dev.gov.uk", Plek.find("allows-dash-separators")
+    assert_equal "http://allows.dot.separators.dev.gov.uk", Plek.find("allows.dot.separators")
+    assert_equal "http://allows-numb3r5.dev.gov.uk", Plek.find("allows-numb3r5")
+  end
+
+  def test_rejects_invalid_service_names
+    assert_raises(ArgumentError) { Plek.find("CAPITAL-LETTERS-ARE-INVALID") }
+    assert_raises(ArgumentError) { Plek.find("underscores_arent_allowed") }
+    assert_raises(ArgumentError) { Plek.find("invalid-because\nnew-line") }
+  end
 end
