@@ -28,7 +28,7 @@ class PlekTest < Minitest::Test
 
   def test_should_magically_return_http_for_dev_gov_uk
     ClimateControl.modify GOVUK_APP_DOMAIN: "dev.gov.uk" do
-      url = Plek.new.find("non-whitehall-service")
+      url = Plek.find("non-whitehall-service")
       assert_equal "http", URI.parse(url).scheme
     end
   end
@@ -98,8 +98,7 @@ class PlekTest < Minitest::Test
   def test_use_http_for_single_label_domains
     ClimateControl.modify PLEK_USE_HTTP_FOR_SINGLE_LABEL_DOMAINS: "1",
                           GOVUK_APP_DOMAIN: "" do
-      p = Plek.new
-      assert_equal "http://frontend", p.find("frontend")
+      assert_equal "http://frontend", Plek.find("frontend")
     end
   end
 
@@ -107,14 +106,12 @@ class PlekTest < Minitest::Test
     ClimateControl.modify PLEK_USE_HTTP_FOR_SINGLE_LABEL_DOMAINS: "1",
                           GOVUK_APP_DOMAIN: "",
                           GOVUK_APP_DOMAIN_EXTERNAL: "example.com" do
-      p = Plek.new
-      assert_equal "https://foo.example.com", p.external_url_for("foo")
+      assert_equal "https://foo.example.com", Plek.external_url_for("foo")
     end
   end
 
   def test_dev_domain_is_http_if_no_http_domains_specified
-    p = Plek.new
-    assert_equal "http://signon.dev.gov.uk", p.find("signon")
+    assert_equal "http://signon.dev.gov.uk", Plek.find("signon")
   end
 
   def test_scheme_relative_urls
@@ -124,25 +121,24 @@ class PlekTest < Minitest::Test
 
   def test_should_return_external_domain
     ClimateControl.modify GOVUK_APP_DOMAIN_EXTERNAL: "baz.external" do
-      assert_equal "https://foo.baz.external", Plek.new.external_url_for("foo")
+      assert_equal "https://foo.baz.external", Plek.external_url_for("foo")
     end
   end
 
   def test_should_be_able_to_avoid_initialisation_for_external_domain
     ClimateControl.modify GOVUK_APP_DOMAIN_EXTERNAL: "baz.external" do
-      assert_equal "https://foo.baz.external", Plek.external_url_for("foo")
+      assert_equal Plek.external_url_for("foo"), Plek.new.external_url_for("foo")
     end
   end
 
   def test_accepts_empty_domain_suffix
-    p = Plek.new("")
-    assert_equal "https://content-store", p.find("content-store")
+    assert_equal "https://content-store", Plek.new("").find("content-store")
   end
 
   def test_accepts_empty_domain_suffix_via_environment
     ClimateControl.modify GOVUK_APP_DOMAIN: "",
                           GOVUK_APP_DOMAIN_EXTERNAL: "example.com" do
-      assert_equal "https://content-store", Plek.new.find("content-store")
+      assert_equal "https://content-store", Plek.find("content-store")
     end
   end
 
