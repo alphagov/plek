@@ -2,8 +2,14 @@
 
 # Unreleased
 
+Nothing yet.
+
+# 4.1.0
+
   * Deprecate usage of `Plek.current` this method will be removed in next
     major version. This adds a warning for users.
+  * Remove public setter methods for `parent_domain` and `external_domain`.
+    These are not used anywhere so there are no API compatibility issues.
   * Allow setting `GOVUK_APP_DOMAIN=""` (empty string). Similarly for
     `GOVUK_APP_DOMAIN_EXTERNAL`. This allows single-label domains to be used in
     service URLs instead of FQDNs, which eliminates a lot of configuration
