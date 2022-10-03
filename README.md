@@ -72,4 +72,4 @@ component, for example `frontend` or `content-store`, as opposed to
 
 ## Versioning policy
 
-This is versioned according to [Semantic Versioning 2.0](http://semver.org/)
+This is versioned according to [Semantic Versioning 2.0](https://semver.org/)
