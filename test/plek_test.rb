@@ -79,12 +79,6 @@ class PlekTest < Minitest::Test
     end
   end
 
-  def test_should_be_able_to_avoid_instantiation_with_uris
-    ClimateControl.modify GOVUK_APP_DOMAIN: "foo.bar.baz" do
-      assert_equal Plek.new.find_uri("foo"), Plek.find_uri("foo")
-    end
-  end
-
   def test_should_prepend_data_from_the_environment
     ClimateControl.modify PLEK_HOSTNAME_PREFIX: "test-" do
       assert_equal "https://test-foo.preview.alphagov.co.uk", Plek.new("preview.alphagov.co.uk").find("foo")
@@ -131,6 +125,12 @@ class PlekTest < Minitest::Test
   def test_should_return_external_domain
     ClimateControl.modify GOVUK_APP_DOMAIN_EXTERNAL: "baz.external" do
       assert_equal "https://foo.baz.external", Plek.new.external_url_for("foo")
+    end
+  end
+
+  def test_should_be_able_to_avoid_initialisation_for_external_domain
+    ClimateControl.modify GOVUK_APP_DOMAIN_EXTERNAL: "baz.external" do
+      assert_equal "https://foo.baz.external", Plek.external_url_for("foo")
     end
   end
 

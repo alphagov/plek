@@ -2,10 +2,12 @@
 
 # Unreleased
 
+  * Add convenience methods for `Plek.external_url_for`, `Plek.asset_root`
+    and `Plek.website_root` for consistency in methods.
   * BREAKING: Remove `Plek.find_uri`, `Plek#find_uri`, `Plek#asset_uri` and
     `Plek#website_uri`these weren't consistent with full interface and are
-    barely used. Use `URI(Plek.find('foo'))`, `URI(Plek.new.asset_uri)` or
-    `URI(Plek.new.website_uri)` instead.
+    barely used. Use `URI(Plek.find('foo'))`, `URI(Plek.asset_uri)` or
+    `URI(Plek.website_uri)` instead.
   * BREAKING: Remove `Plek.current` method, this was deprecated 10 years ago
     and apps should be using `Plek.new` or shorthand alternatives (`Plek.find`)
 

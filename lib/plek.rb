@@ -1,5 +1,6 @@
 require "plek/version"
 require "uri"
+require "forwardable"
 
 # Plek resolves service names to a corresponding base URL.
 #
@@ -116,11 +117,25 @@ class Plek
   end
 
   class << self
-    # Convenience wrapper.  The same as calling +Plek.new.find+.
-    # @see #find
-    def find(*args)
-      new.find(*args)
-    end
+    extend Forwardable
+
+    # @!method find
+    #   Convenience wrapper. The same as calling +Plek.new.find+.
+    #   @see #find
+    #   @return [String]
+    # @!method external_url_for
+    #   Convenience wrapper. The same as calling +Plek.new.external_url_for+.
+    #   @see #external_url_for
+    #   @return [String]
+    # @!method asset_root
+    #   Convenience wrapper. The same as calling +Plek.new.asset_root+.
+    #   @see #asset_root
+    #   @return [String]
+    # @!method website_root
+    #   Convenience wrapper. The same as calling +Plek.new.website_root+.
+    #   @see #website_root
+    #   @return [String]
+    def_delegators :new, :find, :external_url_for, :asset_root, :website_root
   end
 
 private

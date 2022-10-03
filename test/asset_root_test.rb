@@ -29,5 +29,9 @@ describe Plek do
         assert_equal "https://static.foo.gov.uk", Plek.new("foo.gov.uk").asset_root
       end
     end
+
+    it "should provide asset_root as a static method" do
+      assert_equal "http://static.dev.gov.uk", Plek.asset_root
+    end
   end
 end
