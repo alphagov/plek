@@ -75,7 +75,11 @@ class PlekTest < Minitest::Test
 
   def test_should_be_able_to_use_current_for_old_style_calls
     ClimateControl.modify GOVUK_APP_DOMAIN: "foo.bar.baz" do
-      assert_equal Plek.new.find("foo"), Plek.current.find("foo")
+      old_style = nil
+      assert_output("", "Plek.current is deprecated and will be removed. Use Plek.new or Plek.find instead.\n") do
+        old_style = Plek.current.find("foo")
+      end
+      assert_equal Plek.new.find("foo"), old_style
     end
   end
 
