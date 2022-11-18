@@ -28,7 +28,7 @@ class PlekTest < Minitest::Test
 
   def test_should_magically_return_http_for_dev_gov_uk
     ClimateControl.modify GOVUK_APP_DOMAIN: "dev.gov.uk" do
-      url = Plek.new.find("non-whitehall-service")
+      url = Plek.find("non-whitehall-service")
       assert_equal "http", URI.parse(url).scheme
     end
   end
@@ -73,25 +73,9 @@ class PlekTest < Minitest::Test
     assert_equal "https://explore-reviewomatic.production.alphagov.co.uk", url
   end
 
-  def test_should_be_able_to_use_current_for_old_style_calls
-    ClimateControl.modify GOVUK_APP_DOMAIN: "foo.bar.baz" do
-      old_style = nil
-      assert_output("", "Plek.current is deprecated and will be removed. Use Plek.new or Plek.find instead.\n") do
-        old_style = Plek.current.find("foo")
-      end
-      assert_equal Plek.new.find("foo"), old_style
-    end
-  end
-
   def test_should_be_able_to_avoid_instantiation_in_the_client
     ClimateControl.modify GOVUK_APP_DOMAIN: "foo.bar.baz" do
       assert_equal Plek.new.find("foo"), Plek.find("foo")
-    end
-  end
-
-  def test_should_be_able_to_avoid_instantiation_with_uris
-    ClimateControl.modify GOVUK_APP_DOMAIN: "foo.bar.baz" do
-      assert_equal Plek.new.find_uri("foo"), Plek.find_uri("foo")
     end
   end
 
@@ -114,8 +98,7 @@ class PlekTest < Minitest::Test
   def test_use_http_for_single_label_domains
     ClimateControl.modify PLEK_USE_HTTP_FOR_SINGLE_LABEL_DOMAINS: "1",
                           GOVUK_APP_DOMAIN: "" do
-      p = Plek.new
-      assert_equal "http://frontend", p.find("frontend")
+      assert_equal "http://frontend", Plek.find("frontend")
     end
   end
 
@@ -123,14 +106,12 @@ class PlekTest < Minitest::Test
     ClimateControl.modify PLEK_USE_HTTP_FOR_SINGLE_LABEL_DOMAINS: "1",
                           GOVUK_APP_DOMAIN: "",
                           GOVUK_APP_DOMAIN_EXTERNAL: "example.com" do
-      p = Plek.new
-      assert_equal "https://foo.example.com", p.external_url_for("foo")
+      assert_equal "https://foo.example.com", Plek.external_url_for("foo")
     end
   end
 
   def test_dev_domain_is_http_if_no_http_domains_specified
-    p = Plek.new
-    assert_equal "http://signon.dev.gov.uk", p.find("signon")
+    assert_equal "http://signon.dev.gov.uk", Plek.find("signon")
   end
 
   def test_scheme_relative_urls
@@ -140,19 +121,36 @@ class PlekTest < Minitest::Test
 
   def test_should_return_external_domain
     ClimateControl.modify GOVUK_APP_DOMAIN_EXTERNAL: "baz.external" do
-      assert_equal "https://foo.baz.external", Plek.new.external_url_for("foo")
+      assert_equal "https://foo.baz.external", Plek.external_url_for("foo")
+    end
+  end
+
+  def test_should_be_able_to_avoid_initialisation_for_external_domain
+    ClimateControl.modify GOVUK_APP_DOMAIN_EXTERNAL: "baz.external" do
+      assert_equal Plek.external_url_for("foo"), Plek.new.external_url_for("foo")
     end
   end
 
   def test_accepts_empty_domain_suffix
-    p = Plek.new("")
-    assert_equal "https://content-store", p.find("content-store")
+    assert_equal "https://content-store", Plek.new("").find("content-store")
   end
 
   def test_accepts_empty_domain_suffix_via_environment
     ClimateControl.modify GOVUK_APP_DOMAIN: "",
                           GOVUK_APP_DOMAIN_EXTERNAL: "example.com" do
-      assert_equal "https://content-store", Plek.new.find("content-store")
+      assert_equal "https://content-store", Plek.find("content-store")
     end
+  end
+
+  def test_accepts_valid_service_names
+    assert_equal "http://allows-dash-separators.dev.gov.uk", Plek.find("allows-dash-separators")
+    assert_equal "http://allows.dot.separators.dev.gov.uk", Plek.find("allows.dot.separators")
+    assert_equal "http://allows-numb3r5.dev.gov.uk", Plek.find("allows-numb3r5")
+  end
+
+  def test_rejects_invalid_service_names
+    assert_raises(ArgumentError) { Plek.find("CAPITAL-LETTERS-ARE-INVALID") }
+    assert_raises(ArgumentError) { Plek.find("underscores_arent_allowed") }
+    assert_raises(ArgumentError) { Plek.find("invalid-because\nnew-line") }
   end
 end

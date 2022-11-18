@@ -1,5 +1,6 @@
 require "plek/version"
 require "uri"
+require "forwardable"
 
 # Plek resolves service names to a corresponding base URL.
 #
@@ -71,7 +72,7 @@ class Plek
   #   scheme (eg `//foo.example.com`)
   # @return [String] The base URL for the service.
   def find(service, options = {})
-    name = clean_name(service)
+    name = valid_service_name(service)
     if (service_uri = defined_service_uri_for(name))
       return service_uri
     end
@@ -101,15 +102,6 @@ class Plek
     find(service, options.merge(external: true))
   end
 
-  # Find the base URL for a service/application, and parse as a URI object.
-  # This wraps #find and returns the parsed result.
-  #
-  # @param args see {#find}
-  # @return [URI::HTTPS,URI::HTTP,URI::Generic] The base URL for the service
-  def find_uri(*args)
-    URI(find(*args))
-  end
-
   # Find the base URL for assets.
   #
   # @return [String] The assets base URL.
@@ -124,51 +116,37 @@ class Plek
     env_var_or_dev_fallback("GOVUK_WEBSITE_ROOT") { find("www") }
   end
 
-  # Find the base URL for assets.
-  #
-  # @return [URI::HTTPS,URI::HTTP,URI::Generic] The assets base URL.
-  def asset_uri
-    URI(asset_root)
-  end
-
-  # Find the base URL for the public website frontend.
-  #
-  # @return [URI::HTTPS,URI::HTTP,URI::Generic] The website base URL.
-  def website_uri
-    URI(website_root)
-  end
-
-  # TODO: clean up all references to these and then remove them.
   class << self
-    # This alias allows calls to be made in the old style:
-    #     Plek.current.find('foo')
-    # as well as the new style:
-    #     Plek.new.find('foo')
-    def current(...)
-      warn "Plek.current is deprecated and will be removed. Use Plek.new or Plek.find instead."
-      new(...)
-    end
+    extend Forwardable
 
-    # Convenience wrapper.  The same as calling +Plek.new.find+.
-    # @see #find
-    def find(*args)
-      new.find(*args)
-    end
-
-    # Convenience wrapper.  The same as calling +Plek.new.find_uri+.
-    # @see #find_uri
-    def find_uri(*args)
-      new.find_uri(*args)
-    end
+    # @!method find
+    #   Convenience wrapper. The same as calling +Plek.new.find+.
+    #   @see #find
+    #   @return [String]
+    # @!method external_url_for
+    #   Convenience wrapper. The same as calling +Plek.new.external_url_for+.
+    #   @see #external_url_for
+    #   @return [String]
+    # @!method asset_root
+    #   Convenience wrapper. The same as calling +Plek.new.asset_root+.
+    #   @see #asset_root
+    #   @return [String]
+    # @!method website_root
+    #   Convenience wrapper. The same as calling +Plek.new.website_root+.
+    #   @see #website_root
+    #   @return [String]
+    def_delegators :new, :find, :external_url_for, :asset_root, :website_root
   end
 
 private
 
   attr_reader :host_prefix, :unprefixable_hosts, :use_http_for_single_label_domains
 
-  # TODO: clean up call sites throughout alphagov and then delete clean_name.
-  def clean_name(service)
-    service.to_s.downcase.strip.gsub(/[^a-z.-]+/, "")
+  def valid_service_name(name)
+    service_name = name.to_s
+    return service_name if service_name.match?(/\A[a-z1-9.-]+\z/)
+
+    raise ArgumentError, "Plek expects a service name to only contain lowercase a-z, numbers . (period) and - (dash) characters."
   end
 
   def http_domain?(domain)
