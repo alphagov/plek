@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# Unreleased
+
+* Drop support for Ruby 2.7.
+
 # 5.0.0
 
   * BREAKING: Plek will no longer try to fix malformed service names and will
