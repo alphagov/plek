@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.license     = "MIT"
 
   s.files = Dir.glob("lib/**/*") + %w[LICENCE README.md]
-  s.required_ruby_version = ">= 3.3"
+  s.required_ruby_version = ">= 3.1.4"
   s.require_path = "lib"
   s.add_development_dependency "climate_control"
   s.add_development_dependency "minitest"
