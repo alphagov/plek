@@ -1,2 +1,4 @@
 plek-*.gem
 Gemfile.lock
+# simplecov
+coverage/
