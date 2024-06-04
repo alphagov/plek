@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 5.2.0
+
+* Drop support for Ruby 3.0
+
 # 5.1.0
 
 * Drop support for Ruby 2.7.
