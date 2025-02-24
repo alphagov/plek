@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 5.2.1
+
+* Add Github Workflow check for Action Linting, ratchet version number
+
 # 5.2.0
 
 * Drop support for Ruby 3.0
