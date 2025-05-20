@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 5.2.2
+
+* Configure CI workflow to handle concurrent releases ([#150](https://github.com/alphagov/plek/pull/150))
+
 # 5.2.1
 
 * Add Github Workflow check for Action Linting, ratchet version number
