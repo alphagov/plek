@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 5.3.0
+
+* Drop support for Ruby 3.1
+
 # 5.2.2
 
 * Configure CI workflow to handle concurrent releases ([#150](https://github.com/alphagov/plek/pull/150))
