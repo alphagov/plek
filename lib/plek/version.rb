@@ -1,3 +1,3 @@
 class Plek
-  VERSION = "5.3.0".freeze
+  VERSION = "5.3.1".freeze
 end

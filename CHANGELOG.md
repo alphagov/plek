@@ -1,5 +1,8 @@
 # CHANGELOG
 
+# 5.3.1
+* Set dependency cooldowns for Dependabot
+
 # 5.3.0
 
 * Drop support for Ruby 3.1
