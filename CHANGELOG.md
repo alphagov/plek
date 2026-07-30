@@ -1,5 +1,8 @@
 # CHANGELOG
 
+# 5.3.2
+* Name GitHub Actions for [govuk-dependabot-merger](https://github.com/alphagov/govuk-dependabot-merger) to automerge
+
 # 5.3.1
 * Set dependency cooldowns for Dependabot
 
