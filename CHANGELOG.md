@@ -1,3 +1,7 @@
+# 5.3.3
+
+* Update dependencies
+
 # CHANGELOG
 
 # 5.3.2
