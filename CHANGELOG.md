@@ -1,5 +1,10 @@
 # CHANGELOG
 
+# 6.0.0
+
+* BREAKING: Drop support for Ruby 3.2
+* Bump Ruby to 4.0.10
+
 # 5.3.2
 * Name GitHub Actions for [govuk-dependabot-merger](https://github.com/alphagov/govuk-dependabot-merger) to automerge
 
